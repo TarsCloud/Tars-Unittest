@@ -1,0 +1,19 @@
+
+module TarsTest
+{
+
+interface TypeDemo
+{
+    int test();
+    int echoInt(int iInput,out int iEcho);
+    int echoBool(bool bInput,out bool bEcho);
+    int echoShort(short sInput,out short sEcho);
+    int echoLong(long lInput,out long lEcho);
+    int echoByte(byte bInput,out byte bEcho);
+    int echoString(string strInput,out string strEcho);
+    int echoVector(vector<int> vInput,out vector<int> vEcho);
+    int echoMap(map<int,string> mInput,out map<int,string> mEcho);
+    int echoMultiType(vector<map<int,string>> mtInput, out vector<map<int,string>> mtEcho);
+};
+
+}; 

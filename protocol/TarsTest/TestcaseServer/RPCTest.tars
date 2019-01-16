@@ -1,0 +1,11 @@
+
+module TarsTest
+{
+
+interface RPCTest
+{
+    int test();
+    int testStr(out string sOut);
+};
+
+}; 

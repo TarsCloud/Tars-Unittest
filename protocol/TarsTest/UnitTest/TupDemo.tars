@@ -1,0 +1,22 @@
+module TarsTest
+{
+struct AddInt
+	{
+		0 require int adda;
+		1 require int addb;
+		2 optional string addStr="this is a add b";
+	};
+
+	struct Result
+	{
+		0 require int addResult;
+		1 require string strResult;
+	};
+
+	interface TupDemo
+	{
+		//int test();
+		int aAddb(AddInt addData, out Result aAddbResult);
+		int helloWord(string strIn, out string strOut);
+	};
+};

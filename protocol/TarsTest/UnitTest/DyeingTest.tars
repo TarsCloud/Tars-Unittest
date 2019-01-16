@@ -1,0 +1,11 @@
+
+module TarsTest
+{
+
+interface DyeingTest
+{
+    int test();
+    int testDyeing(routekey string strIn,out string strOut);
+};
+
+}; 

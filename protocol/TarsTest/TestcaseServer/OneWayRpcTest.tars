@@ -1,0 +1,7 @@
+module TarsTest
+{
+interface OneWayRpcTest
+{
+    int test();
+};
+};

@@ -1,0 +1,10 @@
+/project/build/*
+/result/*
+/covResult/*
+/tools/*
+/protocol/*.o
+/protocol/*.d
+/taf_result.xml
+
+*.o
+*.d

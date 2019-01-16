@@ -1,0 +1,13 @@
+
+module TarsTest
+{
+interface BServant
+{
+    int test();
+    //int testInt(int iIn,out int iOut);
+    int testHello(string sReq, out string sRsp);
+    //int saySomething(string something,out string strOut);
+    //int queryTest(ReqInfo req, out vector<RspInfo> vRsp);
+};
+
+}; 
