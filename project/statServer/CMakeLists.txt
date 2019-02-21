@@ -16,4 +16,8 @@ ${TARS_SERVANT_LIB}
 
 add_executable(statServer ${STAT_SRV})
 
+if(_USE_OPENTRACKING)
+target_link_libraries(statServer tarsservant tarsutil pthread opentracing zipkin_opentracing zipkin curl)
+else()
 target_link_libraries(statServer tarsservant tarsutil pthread)
+endif()

@@ -43,14 +43,14 @@ cd ./build
 
 if [ "$clean_build"x == "YES"x ]  ;then
 rm -rf !tarscpp
-cd ${TARS_ROOT}/cpp
+cd ${TARS_ROOT}
 find . -name "*.gcda" | xargs rm  -rf
 cd -
 fi
 
 if [ "$clean_all"x == "YES"x ]  ;then
 rm -rf *
-cd ${TARS_ROOT}/cpp
+cd ${TARS_ROOT}
 find . -name "*.gcda" | xargs rm  -rf
 cd -
 fi

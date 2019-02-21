@@ -16,4 +16,8 @@ ${TARS_SERVANT_LIB}
 
 add_executable(logServer ${LOG_SRV})
 
+if(_USE_OPENTRACKING)
+target_link_libraries(logServer tarsservant tarsutil pthread opentracing zipkin_opentracing zipkin curl)
+else()
 target_link_libraries(logServer tarsservant tarsutil pthread)
+endif()

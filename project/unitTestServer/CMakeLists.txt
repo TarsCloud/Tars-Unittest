@@ -19,4 +19,8 @@ ${TARS_SERVANT_LIB}
 
 add_executable(unitTestServer ${UNIT_TEST_SRV})
 
+if(_USE_OPENTRACKING)
+target_link_libraries(unitTestServer tarsservant tarsutil pthread opentracing zipkin_opentracing zipkin curl)
+else()
 target_link_libraries(unitTestServer tarsservant tarsutil pthread)
+endif()
