@@ -12,7 +12,7 @@ Tars-Test单元测试的开发主要基于GoogleTest测试框架，关于GoogleT
 ----
 进入test下的script文件夹内，运行run_test.sh脚本,即可输出用例运行结果：
 ```c
-cd test/script/
+cd ./tars-unittest/script/
 ./run_test.sh 
 ```
 若想得到覆盖率结果，可加入运行选项-l，系统将在tars-test下生成result文件夹，其中即包含了覆盖率文件。如下：
