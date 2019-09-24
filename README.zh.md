@@ -10,7 +10,7 @@ Tars-Test单元测试的开发主要基于GoogleTest测试框架，关于GoogleT
 ```
 2、使用说明
 ----
-进入test下的script文件夹内，运行run_test.sh脚本,即可输出用例运行结果：
+进入tars-uniittest下的script文件夹内，运行run_test.sh脚本,即可输出用例运行结果：
 ```c
 cd ./tars-unittest/script/
 ./run_test.sh 
