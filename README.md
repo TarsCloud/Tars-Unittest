@@ -14,7 +14,7 @@ Since Tars-Test is based on GoogleTest, you need to install GoogleTest and gener
 Enter the script folder under unittest(Tars-Test) and run the run_test.sh script to output the use case results:    
 
 ```c
-cd test/script/
+cd ./tars-unittest/script/
 ./run_test.sh
 ```
 If you want to get the coverage result, you can add the run the script with option '-l', the system will generate the result folder under unittest(Tars-Test), which contains the coverage file. as follows:  
