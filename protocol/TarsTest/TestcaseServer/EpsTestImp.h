@@ -18,13 +18,13 @@
 #define _EpsTestImp_H_
 #include <string>
 #include "servant/Application.h"
-#include "EpsTest.h"
+#include "RPCTest.h"
 
 /**
  *  *
  *   *
  *    */
-class EpsTestImp : public TarsTest::EpsTest
+class EpsTestImp : public TarsTest::RPCTest
 {
 public:
     /**

@@ -14,7 +14,7 @@
  * specific language governing permissions and limitations under the License.
  */
 #include "gtest/gtest.h"
-#include "util/tc_bind.h"
+// #include "util/tc_bind.h"
 #include "servant/Application.h"
 #include "TarsTest/TestcaseServer/RPCTest.h"
 #include "TarsServantName.h"
@@ -40,9 +40,9 @@ TEST_F(CommGetEpTest, should_return_endpoint)
 {
     string setName = "ab.cd.ef";
     
-    CDbHandle::addInactiveEndPoint(BASE_RPC_SERVANT_NAME, 10121, EndpointInfo::TCP);
+    CDbHandle::addInactiveEndPoint(BASE_RPC_SERVANT_NAME, 10121, TC_Endpoint::TCP);
     
-    CDbHandle::addActiveEndPoint(BASE_RPC_SERVANT_NAME, 10103, EndpointInfo::TCP);
+    CDbHandle::addActiveEndPoint(BASE_RPC_SERVANT_NAME, 10103, TC_Endpoint::TCP);
 
     RPCTestPrx prx  = _comm->stringToProxy<RPCTestPrx> (BASE_RPC_SERVANT_ENDPOINT);
 
@@ -56,7 +56,7 @@ TEST_F(CommGetEpTest, should_return_endpoint)
 
 TEST_F(CommGetEpTest, should_return_endpoint_all)
 {
-    CDbHandle::addInactiveEndPoint(BASE_RPC_SERVANT_NAME, 10121, EndpointInfo::TCP);
+    CDbHandle::addInactiveEndPoint(BASE_RPC_SERVANT_NAME, 10121, TC_Endpoint::TCP);
 
     RPCTestPrx prx  = _comm->stringToProxy<RPCTestPrx> (BASE_RPC_SERVANT_ENDPOINT);
 
@@ -71,7 +71,7 @@ TEST_F(CommGetEpTest, should_return_endpoint_by_set)
 {
     string setName = "ab.cd.ef";
     
-    CDbHandle::addEndPointbySet(BASE_RPC_SERVANT_NAME, 10103, EndpointInfo::TCP, "ab", "cd", "ef");
+    CDbHandle::addEndPointbySet(BASE_RPC_SERVANT_NAME, 10103, TC_Endpoint::TCP, "ab", "cd", "ef");
    
     RPCTestPrx prx  = _comm->stringToProxy<RPCTestPrx> (BASE_RPC_SERVANT_ENDPOINT);
 
@@ -85,7 +85,7 @@ TEST_F(CommGetEpTest, should_return_endpoint_by_set)
 TEST_F(CommGetEpTest, should_response_all_endpoints)
 {
     
-    CDbHandle::addActiveEndPoint(BASE_RPC_SERVANT_NAME, 10103, EndpointInfo::TCP);
+    CDbHandle::addActiveEndPoint(BASE_RPC_SERVANT_NAME, 10103, TC_Endpoint::TCP);
 
     vector<TC_Endpoint> vEndpoint = _comm->getEndpoint("TarsTest.TestcaseServer.RPCTestObj");
 

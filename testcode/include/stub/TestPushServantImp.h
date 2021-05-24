@@ -40,12 +40,6 @@ public:
      */
     virtual void destroy();
 
-    /**
-     *
-     */
-    virtual int test(tars::TarsCurrentPtr current) { return 0;};
-
-
     //重载Servant的doRequest方法
     int doRequest(tars::TarsCurrentPtr current, vector<char>& response);
 

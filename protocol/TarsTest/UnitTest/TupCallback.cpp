@@ -21,7 +21,7 @@
 #include "util/tc_parsepara.h"
 #include "util/tc_config.h"
 #include "util/tc_hash_fun.h"
-#include "util/tc_atomic.h"
+// #include "util/tc_atomic.h"
 //#include "jce/Tup.h"
 
 using namespace std;

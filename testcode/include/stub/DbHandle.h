@@ -26,7 +26,7 @@
 #include <set>
 #include "servant/TarsLogger.h"
 #include "servant/EndpointF.h"
-#include "stub/RegistryDescriptor.h"
+#include "RegistryDescriptor.h"
 
 using namespace tars;
 //////////////////////////////////////////////////////

@@ -3,7 +3,7 @@
 #include <map>
 #include <fstream>
 #include "gtest/gtest.h"
-#include "UserInfo.h"
+#include "TarsTest/UnitTest/UserInfo.h"
 #include "tup/tup.h"
 
 using namespace std;
@@ -11,19 +11,19 @@ using namespace tars;
 using namespace tup;
 using namespace Test;
 
-static string str2hex(const string& sBuffer)
-{
-    string str = "";
-    for (size_t i = 0; i < sBuffer.length(); ++i) {
-        char sb[4] = {0};
-        snprintf(sb, 4, "%02x", (unsigned char)sBuffer[i]);
-        if (i%10==0)str.append("\n");
-        str.append("(byte)0x");
-        str.append(sb);
-        str.append(",");
-    }
-    return str;
-}
+// static string str2hex(const string& sBuffer)
+// {
+//     string str = "";
+//     for (size_t i = 0; i < sBuffer.length(); ++i) {
+//         char sb[4] = {0};
+//         snprintf(sb, 4, "%02x", (unsigned char)sBuffer[i]);
+//         if (i%10==0)str.append("\n");
+//         str.append("(byte)0x");
+//         str.append(sb);
+//         str.append(",");
+//     }
+//     return str;
+// }
 
 /*static char __data[] = {
     0x1c,0x2c,0x3c,0x40,0x03,0x56,0x00,0x66,0x09,0x6e,0x4c,0x6f,0x67,0x69,0x6e,0x6e,0x65,0x77,0x7d,0x00,0x00,0x39,0x08,0x00,0x02,0x06,0x03,0x70,0x77,0x64,0x18,0x00,0x01,0x06,0x06,0x73,0x74,0x72,0x69,0x6e,0x67,0x1d,0x00,0x00,0x0a,0x06,0x08,0x33,0x67,0x71,0x71,0x74,0x65,0x73,0x74,0x06,0x03,0x75,0x69,0x6e,0x18,0x00,0x01,0x06,0x05,0x69,0x6e,0x74,0x33,0x32,0x1d,0x00,0x00,0x05,0x02,0x3f,0xe2,0x78,0xac,0x8c,0x98,0x0c,0xa8,0x0c,};
@@ -174,7 +174,7 @@ TEST(TupUniPacketTest, encode_and_decode_using_UniPacket)
                 EXPECT_STREQ(info.city.c_str(), "bj");
             }
              
-	    char szBirthday[info.birthday.size() + 1] = {0};  
+	        char *szBirthday = new char[info.birthday.size() + 1];  
             cout << "<birthday>:";
             for (int i = 0; i < info.birthday.size(); ++i)
             {
@@ -190,6 +190,7 @@ TEST(TupUniPacketTest, encode_and_decode_using_UniPacket)
                 EXPECT_STREQ(szBirthday, "2019");
             }
 
+            delete []szBirthday;
 
             cout << endl;
             cout << "<city>:" << info.city << endl;
@@ -210,7 +211,10 @@ TEST(TupUniPacketTest, encode_and_decode_using_UniPacket)
             cout << "<uin>:" << it->second.uin << endl;
             cout << "<nick>:" << it->second.nick << endl;
             cout << "<birthday>:";
-            char szBirthday[it->second.birthday.size() + 1] = {0};
+
+            char *szBirthday = new char[it->second.birthday.size() + 1];  
+
+            // char szBirthday[it->second.birthday.size() + 1] = {0};
             for (size_t i = 0; i < it->second.birthday.size(); ++i)
             {
                 cout << it->second.birthday[i] << ",";
@@ -233,6 +237,7 @@ TEST(TupUniPacketTest, encode_and_decode_using_UniPacket)
                 EXPECT_STREQ(szBirthday, "97");
             }
 
+            delete[] szBirthday;
         }
 
         cout << "---------------------------------" << endl;

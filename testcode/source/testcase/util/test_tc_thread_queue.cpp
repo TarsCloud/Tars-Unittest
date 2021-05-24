@@ -28,7 +28,7 @@ typedef TC_AutoPtr<A> APtr;
 class WriteThread : public TC_Thread, public TC_HandleBase
 {
     /**
-     * ÔËÐÐ
+     * ï¿½ï¿½ï¿½ï¿½
      */
 protected:
     virtual void run() 
@@ -37,13 +37,13 @@ protected:
         while(i-- > 0)
         {
             timeval t1;
-            gettimeofday(&t1, NULL);
+            TC_Common::gettimeofday(t1);
 
             _queue.push_back("abc");
             usleep(1000);
 
             timeval t2;
-            gettimeofday(&t2, NULL);
+            TC_Common::gettimeofday(t2);
 
             _logger.debug() << "push_back:" << t2.tv_usec - t1.tv_usec << endl;
 				usleep(1000);
@@ -57,7 +57,7 @@ typedef TC_AutoPtr<WriteThread> WriteThreadPtr;
 class ReadThread : public TC_Thread, public TC_HandleBase
 {
     /**
-     * ÔËÐÐ
+     * ï¿½ï¿½ï¿½ï¿½
      */
 protected:
     virtual void run() 
@@ -67,11 +67,11 @@ protected:
         {
             string t;
             timeval t1;
-            gettimeofday(&t1, NULL);
+            TC_Common::gettimeofday(t1);
             if(_queue.pop_front(t, 10))
             {
                 timeval t2;
-                gettimeofday(&t2, NULL);
+                TC_Common::gettimeofday(t2);
                 _logger.debug() << "pop_front:" << t2.tv_usec - t1.tv_usec << endl;
 //                cout << pthread_self() << ":" << t << endl;
                 usleep(20 * 1000);

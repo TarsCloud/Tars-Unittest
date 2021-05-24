@@ -14,7 +14,7 @@
  * specific language governing permissions and limitations under the License.
  */
 #include "gtest/gtest.h"
-#include "util/tc_bind.h"
+// #include "util/tc_bind.h"
 #include "servant/Application.h"
 #include "TarsTest/TestcaseServer/OneWayRpcTest.h"
 #include "servant/AdminF.h"

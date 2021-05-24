@@ -17,6 +17,7 @@ ${TARS_UTIL_LIB}
 ${TARS_SERVANT_LIB}
 )
 
+
 add_executable(unitTestServer ${UNIT_TEST_SRV})
 
 if(_USE_OPENTRACKING)

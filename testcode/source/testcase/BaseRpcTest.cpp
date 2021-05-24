@@ -18,7 +18,7 @@
 
 
 #include "gtest/gtest.h"
-#include "util/tc_bind.h"
+// #include "util/tc_bind.h"
 #include "servant/Application.h"
 #include "TarsTest/TestcaseServer/RPCTest.h"
 #include "TarsServantName.h"
@@ -75,7 +75,7 @@ TEST_F(BaseRpcTest, should_rpc_exception_when_client_sync_call_not_exist_server)
     }
     catch (std::exception& e)
     {
-        EXPECT_TRUE(string(e.what()).find("[ServantProxy::invoke timeout:") != string::npos);
+        EXPECT_TRUE(string(e.what()).find("server unknown exception: ret:-7") != string::npos);
     }
 }
 
@@ -93,27 +93,27 @@ TEST_F(BaseRpcTest, should_response_rpc_when_client_async_call_server_by_ip)
     EXPECT_TRUE(isCallbackCalled);
 }
 
-extern "C" void handleResult(const promise::Future<  RPCTestPrxCallbackPromise::PromisetestPtr >& f)
-{
-    do
-    {
-        RPCTestPrxCallbackPromise::PromisetestPtr ptr = f.get();
-        EXPECT_EQ(ptr->_ret, 2);
-        BaseRpcTest::isCallbackCalled = true;
-    } while (0);
-}
-TEST_F(BaseRpcTest, should_response_rpc_when_client_promise_async_call_server_by_ip)
-{
-    RPCTestPrx prx;
-    map<string, string> context;
-    prx = _comm->stringToProxy<RPCTestPrx> (BASE_RPC_SERVANT_ENDPOINT);
+// extern "C" void handleResult(const promise::Future<  RPCTestPrxCallbackPromise::PromisetestPtr >& f)
+// {
+//     do
+//     {
+//         RPCTestPrxCallbackPromise::PromisetestPtr ptr = f.get();
+//         EXPECT_EQ(ptr->_ret, 2);
+//         BaseRpcTest::isCallbackCalled = true;
+//     } while (0);
+// }
+// TEST_F(BaseRpcTest, should_response_rpc_when_client_promise_async_call_server_by_ip)
+// {
+//     RPCTestPrx prx;
+//     map<string, string> context;
+//     prx = _comm->stringToProxy<RPCTestPrx> (BASE_RPC_SERVANT_ENDPOINT);
 
-    promise::Future< RPCTestPrxCallbackPromise::PromisetestPtr > f = prx -> promise_async_test(context);
+//     promise::Future< RPCTestPrxCallbackPromise::PromisetestPtr > f = prx -> promise_async_test(context);
 
-    f.then(tars::TC_Bind(&handleResult));
+//     f.then(tars::TC_Bind(&handleResult));
 
-    sleep(1);
+//     sleep(1);
 
-    EXPECT_TRUE(isCallbackCalled);
-}
+//     EXPECT_TRUE(isCallbackCalled);
+// }
 

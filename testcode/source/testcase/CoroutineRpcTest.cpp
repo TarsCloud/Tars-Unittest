@@ -16,7 +16,7 @@
 
 
 #include "gtest/gtest.h"
-#include "util/tc_bind.h"
+// #include "util/tc_bind.h"
 #include "servant/Application.h"
 #include "TarsTest/TestcaseServer/RPCTest.h"
 #include "TarsServantName.h"

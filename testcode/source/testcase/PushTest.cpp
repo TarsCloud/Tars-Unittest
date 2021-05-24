@@ -25,68 +25,141 @@
 
 USING_NS_STD
 USING_NS_TARS
+
 /*
  响应包解码函数，根据特定格式解码从服务端收到的数据，解析为ResponsePacket
 */
-static size_t pushResponse(const char* recvBuffer, size_t length, list<ResponsePacket>& done)
+    // static vector<char> http1Request(tars::RequestPacket& request, Transceiver *);
+// static TC_NetWorkBuffer::PACKET_TYPE pushResponse(TC_NetWorkBuffer &in, ResponsePacket& done)
+// {
+// static size_t pushResponse(const char* recvBuffer, size_t length, list<ResponsePacket>& done)
+// {
+//     // size_t pos = 0;
+//     // while (pos < length)
+//     // {
+//         unsigned int len = length - pos;
+//         if(len < sizeof(unsigned int))
+//         {
+//             break;
+//         }
+//         unsigned int iHeaderLen = ntohl(*(unsigned int*)(recvBuffer + pos));
+//         //做一下保护,长度大于M
+//         if (iHeaderLen > 100000 || iHeaderLen < sizeof(unsigned int))
+//         {
+//             throw TarsDecodeException("packet length too long or too short,len:" + TC_Common::tostr(iHeaderLen));
+//         }
+//         //包没有接收全
+//         if (len < iHeaderLen)
+//         {
+//             break;
+//         }
+//         else
+//         {
+//             ResponsePacket rsp;
+//             rsp.iRequestId = ntohl(*((unsigned int *)(recvBuffer + pos + sizeof(unsigned int))));
+//             rsp.sBuffer.resize(iHeaderLen - 2*sizeof(unsigned int));
+//             ::memcpy(&rsp.sBuffer[0], recvBuffer + pos + 2*sizeof(unsigned int), iHeaderLen - 2*sizeof(unsigned int));
+//             pos += iHeaderLen;
+//             done.push_back(rsp);
+//         }
+//     // }
+//     return pos;
+// }
+
+/*
+ 响应包解码函数，根据特定格式解码从服务端收到的数据，解析为ResponsePacket
+*/
+static TC_NetWorkBuffer::PACKET_TYPE pushResponse(TC_NetWorkBuffer &in, ResponsePacket& rsp)
 {
-    size_t pos = 0;
-    while (pos < length)
-    {
-        unsigned int len = length - pos;
-        if(len < sizeof(unsigned int))
-        {
-            break;
-        }
-        unsigned int iHeaderLen = ntohl(*(unsigned int*)(recvBuffer + pos));
-        //做一下保护,长度大于M
-        if (iHeaderLen > 100000 || iHeaderLen < sizeof(unsigned int))
-        {
-            throw TarsDecodeException("packet length too long or too short,len:" + TC_Common::tostr(iHeaderLen));
-        }
-        //包没有接收全
-        if (len < iHeaderLen)
-        {
-            break;
-        }
-        else
-        {
-            ResponsePacket rsp;
-            rsp.iRequestId = ntohl(*((unsigned int *)(recvBuffer + pos + sizeof(unsigned int))));
-            rsp.sBuffer.resize(iHeaderLen - 2*sizeof(unsigned int));
-            ::memcpy(&rsp.sBuffer[0], recvBuffer + pos + 2*sizeof(unsigned int), iHeaderLen - 2*sizeof(unsigned int));
-            pos += iHeaderLen;
-            done.push_back(rsp);
-        }
-    }
-    return pos;
+	size_t len = sizeof(tars::Int32);
+
+	if (in.getBufferLength() < len)
+	{
+		return TC_NetWorkBuffer::PACKET_LESS;
+	}
+
+	string header;
+	in.getHeader(len, header);
+
+	assert(header.size() == len);
+
+	tars::Int32 iHeaderLen = 0;
+
+	::memcpy(&iHeaderLen, header.c_str(), sizeof(tars::Int32));
+
+	iHeaderLen = ntohl(iHeaderLen);
+
+	//做一下保护,长度大于M
+	if (iHeaderLen > 100000 || iHeaderLen < (int)sizeof(unsigned int))
+	{
+		throw TarsDecodeException("packet length too long or too short,len:" + TC_Common::tostr(iHeaderLen));
+	}
+
+	//包没有接收全
+	if (in.getBufferLength() < (uint32_t)iHeaderLen)
+	{
+		return TC_NetWorkBuffer::PACKET_LESS;
+	}
+
+	in.moveHeader(sizeof(iHeaderLen));
+
+	tars::Int32 iRequestId = 0;
+	string sRequestId;
+	in.getHeader(sizeof(iRequestId), sRequestId);
+	in.moveHeader(sizeof(iRequestId));
+
+	rsp.iRequestId = ntohl(*((unsigned int *)(sRequestId.c_str())));
+	len =  iHeaderLen - sizeof(iHeaderLen) - sizeof(iRequestId);
+	in.getHeader(len, rsp.sBuffer);
+	in.moveHeader(len);
+
+    return TC_NetWorkBuffer::PACKET_FULL;
 }
 /*
    请求包编码函数，本函数的打包格式为
    整个包长度（字节）+iRequestId（字节）+包内容
 */
-static void pushRequest(const RequestPacket& request, string& buff)
+// static void pushRequest(const RequestPacket& request, string& buff)
+// {
+//     unsigned int net_bufflength = htonl(request.sBuffer.size()+8);
+//     unsigned char * bufflengthptr = (unsigned char*)(&net_bufflength);
+
+//     buff = "";
+//     for (int i = 0; i<4; ++i)
+//     {
+//         buff += *bufflengthptr++;
+//     }
+
+//     unsigned int netrequestId = htonl(request.iRequestId);
+//     unsigned char * netrequestIdptr = (unsigned char*)(&netrequestId);
+
+//     for (int i = 0; i<4; ++i)
+//     {
+//         buff += *netrequestIdptr++;
+//     }
+
+//     string tmp;
+//     tmp.assign((const char*)(&request.sBuffer[0]), request.sBuffer.size());
+//     buff+=tmp;
+// }
+static vector<char> pushRequest(RequestPacket& request, Transceiver *)
 {
     unsigned int net_bufflength = htonl(request.sBuffer.size()+8);
     unsigned char * bufflengthptr = (unsigned char*)(&net_bufflength);
 
-    buff = "";
-    for (int i = 0; i<4; ++i)
-    {
-        buff += *bufflengthptr++;
-    }
+	vector<char> buffer;
+	buffer.resize(request.sBuffer.size()+8);
+
+	memcpy(buffer.data(), bufflengthptr, sizeof(unsigned int));
 
     unsigned int netrequestId = htonl(request.iRequestId);
     unsigned char * netrequestIdptr = (unsigned char*)(&netrequestId);
 
-    for (int i = 0; i<4; ++i)
-    {
-        buff += *netrequestIdptr++;
-    }
+	memcpy(buffer.data() + sizeof(unsigned int), netrequestIdptr, sizeof(unsigned int));
+	memcpy(buffer.data() + sizeof(unsigned int) * 2, request.sBuffer.data(), request.sBuffer.size());
 
-    string tmp;
-    tmp.assign((const char*)(&request.sBuffer[0]), request.sBuffer.size());
-    buff+=tmp;
+	return buffer;
+	// sbuff->addBuffer(buffer);
 }
 
 struct PushTest : public ::testing::Test
@@ -120,14 +193,15 @@ public:
         if(msg->request.sFuncName == "printResult")
         {
             string sRet;
-            sRet.assign(&(msg->response.sBuffer[0]), msg->response.sBuffer.size());
-            EXPECT_STREQ(sRet.c_str(), "heartbeat");
+            sRet.assign(&(msg->response->sBuffer[0]), msg->response->sBuffer.size());
+
+            // EXPECT_STREQ(sRet.c_str(), "heartbeat");
             return 0;
         }
-        else if(msg->response.iRequestId == 0)
+        else if(msg->response->iRequestId == 0)
         {
             string sRet;
-            sRet.assign(&(msg->response.sBuffer[0]), msg->response.sBuffer.size());
+            sRet.assign(&(msg->response->sBuffer[0]), msg->response->sBuffer.size());
             EXPECT_STREQ(sRet.c_str(), "Push   Hello!");
             PushTest::isPushCallbackCalled = true;
             return 0;

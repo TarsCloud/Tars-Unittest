@@ -18,57 +18,29 @@
 #include "StatServer.h"
 
 ///////////////////////////////////////////////////////////
-TC_ThreadMutex StatImpThreadData::_mutex;
-pthread_key_t StatImpThreadData::_key = 0;
+
+thread_local shared_ptr<StatImpThreadData>  StatImpThreadData::_data;
 size_t StatImpThreadData::_iNo=0;
+
 
 ///////////////////////////////////////////////////////////
 StatImpThreadData::StatImpThreadData()
 : _iThreadIndex(0)
 {
 }
-void StatImpThreadData::destructor(void* p)
-{
-    StatImpThreadData * pSptd = (StatImpThreadData*)p;
-    if(pSptd)
-    {    
-        delete pSptd;
-        pSptd = NULL;
-    }
-}
 
 StatImpThreadData * StatImpThreadData::getData()
 {
-    if(_key == 0)
+    if(_data)
     {
-        TC_LockT<TC_ThreadMutex> lock(_mutex);
-        if(_key == 0)
-        {
-            int iRet = ::pthread_key_create(&_key, StatImpThreadData::destructor);
-
-            if (iRet != 0)
-            {
-                TLOGERROR("StatImpThreadData pthread_key_create fail:"<< errno << ":" << strerror(errno) << endl);
-                return NULL;
-            }
-        }
+        return _data.get();
     }
 
-    StatImpThreadData * pSptd = (StatImpThreadData*)pthread_getspecific(_key);
+    _data = std::make_shared<StatImpThreadData>(); 
+    _data->_iThreadIndex = _iNo;
+    ++_iNo;
 
-    if(!pSptd)
-    {
-        TC_LockT<TC_ThreadMutex> lock(_mutex);
-
-        pSptd = new StatImpThreadData();
-        pSptd->_iThreadIndex = _iNo;
-        ++_iNo;
-
-        int iRet = pthread_setspecific(_key, (void *)pSptd);
-
-        assert(iRet == 0);
-    }
-    return pSptd;
+    return _data.get();
 }
 
 //////////////////////////////////////////////////////////
@@ -126,7 +98,7 @@ int StatImp::reportMicMsg( const map<tars::StatMicMsgHead, tars::StatMicMsgBody>
 
         //如果不是info等级的日志级别，就别往里走了
         ostringstream os;
-        if(LOG->IsNeedLog(TarsRollLogger::INFO_LOG))
+        if(LOG->isNeedLog(TarsRollLogger::INFO_LOG))
         {
             os.str("");
             head.displaySimple(os);

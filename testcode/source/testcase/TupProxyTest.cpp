@@ -42,68 +42,68 @@ string parsebuffer(int id)
     return buff;
 }
 
-/**
-* @brief 请求方法
-* @param stHttp
-* @param tcpClient
-* @param stHttpRsp
-* @param iTimeout
-* @return int(返回码，0是成功，-3为超时)
-*/
-int doTupRequest(TC_HttpRequest& stHttp,TC_TCPClient&tcpClient, TC_HttpResponse &stHttpRsp, int iTimeout)
-{
-    string sSendBuffer = stHttp.encode();
-    int iRet = tcpClient.send(sSendBuffer.c_str(), sSendBuffer.length());
-    if(iRet != TC_ClientSocket::EM_SUCCESS)
-    {
-        return iRet;
-    }
+// /**
+// * @brief 请求方法
+// * @param stHttp
+// * @param tcpClient
+// * @param stHttpRsp
+// * @param iTimeout
+// * @return int(返回码，0是成功，-3为超时)
+// */
+// int doTupRequest(TC_HttpRequest& stHttp,TC_TCPClient&tcpClient, TC_HttpResponse &stHttpRsp, int iTimeout)
+// {
+//     string sSendBuffer = stHttp.encode();
+//     int iRet = tcpClient.send(sSendBuffer.c_str(), sSendBuffer.length());
+//     if(iRet != TC_ClientSocket::EM_SUCCESS)
+//     {
+//         return iRet;
+//     }
 
-    stHttpRsp.reset();
+//     stHttpRsp.reset();
 
-    string sBuffer;
+//     string sBuffer;
 
-    char *sTmpBuffer = new char[10240];
+//     char *sTmpBuffer = new char[10240];
 	
-    size_t iRecvLen  = 10240;
+//     size_t iRecvLen  = 10240;
 
-    while(true)
-    {
-        iRecvLen = 10240;
+//     while(true)
+//     {
+//         iRecvLen = 10240;
 
-        iRet = tcpClient.recv(sTmpBuffer, iRecvLen);
+//         iRet = tcpClient.recv(sTmpBuffer, iRecvLen);
 
 
-        if(iRet == TC_ClientSocket::EM_SUCCESS)
-            sBuffer.append(sTmpBuffer, iRecvLen);
+//         if(iRet == TC_ClientSocket::EM_SUCCESS)
+//             sBuffer.append(sTmpBuffer, iRecvLen);
 
-        switch(iRet)
-        {
-        case TC_ClientSocket::EM_SUCCESS:
-            if(stHttpRsp.incrementDecode(sBuffer))
-            {
+//         switch(iRet)
+//         {
+//         case TC_ClientSocket::EM_SUCCESS:
+//             if(stHttpRsp.incrementDecode(sBuffer))
+//             {
 				
-                delete []sTmpBuffer;
-                return TC_ClientSocket::EM_SUCCESS;
-            }
-			else
-			{
+//                 delete []sTmpBuffer;
+//                 return TC_ClientSocket::EM_SUCCESS;
+//             }
+// 			else
+// 			{
 				
-			}
-            continue;
-        case TC_ClientSocket::EM_CLOSE:
-            delete []sTmpBuffer;
-            stHttpRsp.incrementDecode(sBuffer);
-            return TC_ClientSocket::EM_SUCCESS;
+// 			}
+//             continue;
+//         case TC_ClientSocket::EM_CLOSE:
+//             delete []sTmpBuffer;
+//             stHttpRsp.incrementDecode(sBuffer);
+//             return TC_ClientSocket::EM_SUCCESS;
 			
-        default:
-            delete []sTmpBuffer;
-            return iRet;
-        }
-    }
+//         default:
+//             delete []sTmpBuffer;
+//             return iRet;
+//         }
+//     }
 
-    return 0;
-}
+//     return 0;
+// }
 /**
 * @brief 执行请求方法
 * @return int(返回码，0是成功，-3为超时)
@@ -128,7 +128,7 @@ int tup_dohandle()
 			
 			stHttpReq.setPostRequest(sServer1, parsebuffer(id++));
 
-			iRet = doTupRequest(stHttpReq,tcpClient1,stHttpRep,3000);  
+			iRet = stHttpReq.doRequest(tcpClient1,stHttpRep);  
 
 			
 		}

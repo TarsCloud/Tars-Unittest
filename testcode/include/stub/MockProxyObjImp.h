@@ -16,7 +16,7 @@
 
 #ifndef _MockProxyObjImp_H_
 #define _MockProxyObjImp_H_
-#include "util/tc_atomic.h"
+// #include "util/tc_atomic.h"
 #include "servant/Application.h"
 #include "servant/Servant.h"
 #include "MockServerObjProxy.h"
@@ -75,7 +75,7 @@ namespace mockProxy
 
         void callMockServer(const RequestPacket &requestPacket,  const ServantProxyCallbackPtr& callback);
 
-        static TC_Atomic requestId;
+        static std::atomic<int> requestId;
 
         string _sMockServerObjName ;
     };

@@ -15,6 +15,7 @@
  */
 
 #include "util/tc_http.h"
+#include "util/tc_network_buffer.h"
 #include "UnitTest.h"
 #include "TypeDemoImp.h"
 #include "TupDemoImp.h"
@@ -29,64 +30,64 @@ using namespace std;
 UnitTest g_app;
 
 
-struct TupProtocol
-{
-    /**
-     * 解析http请求
-     * @param in
-     * @param out
-     *
-     * @return int
-     */
-    static int parseHttp(string &in, string &out)
-    {
-        try
-        {
-                        //判断请求是否是HTTP请求
-            bool b = TC_HttpRequest ::checkRequest(in.c_str(), in.length());
-                        //完整的HTTP请求
-            if(b)
-            {
-                out = in;
-                in  = "";
-				//cout<<"out size: " << out.size() << endl;
-				//TLOGDEBUG("out size: " << out.size() << endl);
-                return TC_EpollServer::PACKET_FULL;
-            }
-            else
-            {
-                return TC_EpollServer::PACKET_LESS;
-            }
-        }
-        catch(exception &ex)
-        {
-            return TC_EpollServer::PACKET_ERR;
-        }
+// struct TupProtocol
+// {
+//     /**
+//      * 解析http请求
+//      * @param in
+//      * @param out
+//      *
+//      * @return int
+//      */
+//     static int parseHttp(string &in, vector<char> &out)
+//     {
+//         try
+//         {
+//                         //判断请求是否是HTTP请求
+//             bool b = TC_HttpRequest ::checkRequest(in.c_str(), in.length());
+//                         //完整的HTTP请求
+//             if(b)
+//             {
+//                 out = in;
+//                 in  = "";
+// 				//cout<<"out size: " << out.size() << endl;
+// 				//TLOGDEBUG("out size: " << out.size() << endl);
+//                 return TC_NetWorkBuffer::PACKET_FULL;
+//             }
+//             else
+//             {
+//                 return TC_NetWorkBuffer::PACKET_LESS;
+//             }
+//         }
+//         catch(exception &ex)
+//         {
+//             return TC_NetWorkBuffer::PACKET_ERR;
+//         }
 
-        return TC_EpollServer::PACKET_LESS;             //表示收到的包不完全
-    }
+//         return TC_NetWorkBuffer::PACKET_LESS;             //表示收到的包不完全
+//     }
 
-};
+// };
 
-struct NTarsProtocol
-{
-    /**
-     * 解析no tars请求
-     * @param in
-     * @param out
-     *
-     * @return int
-     */
-    static int parse(string &in, string &out)
-    {
+// struct NTarsProtocol
+// {
+//     /**
+//      * 解析no tars请求
+//      * @param in
+//      * @param out
+//      *
+//      * @return int
+//      */
+//     static int parse(string &in, string &out)
+//     {
         
-            out = in;
-            in  = "";
-            return 0;
+//             out = in;
+//             in  = "";
+//             return 0;
 
-    }
+//     }
 
-};
+// };
 
 /////////////////////////////////////////////////////////////////
 void
@@ -101,9 +102,9 @@ UnitTest::initialize()
 	addServant<AServantImp>(ServerConfig::Application + "." + ServerConfig::ServerName + ".AServantObj");
 	addServant<AServantImp>(ServerConfig::Application + "." + ServerConfig::ServerName + ".AAServantObj");
 	addServant<BServantImp>(ServerConfig::Application + "." + ServerConfig::ServerName + ".BServantObj");
-	addServantProtocol(ServerConfig::Application + "." + ServerConfig::ServerName + ".AAServantObj", &NTarsProtocol::parse);
+	addServantProtocol(ServerConfig::Application + "." + ServerConfig::ServerName + ".AAServantObj", &TC_NetWorkBuffer::parseEcho);
 	addServant<TupProxyImp>(ServerConfig::Application + "." + ServerConfig::ServerName + ".TupProxyObj");
-	addServantProtocol(ServerConfig::Application + "." + ServerConfig::ServerName + ".TupProxyObj", &TupProtocol::parseHttp);
+	addServantProtocol(ServerConfig::Application + "." + ServerConfig::ServerName + ".TupProxyObj", &TC_NetWorkBuffer::parseHttp);
 	addServant<ProxyImp>(ServerConfig::Application + "." + ServerConfig::ServerName + ".ProxyObj");
 } 
 /////////////////////////////////////////////////////////////////

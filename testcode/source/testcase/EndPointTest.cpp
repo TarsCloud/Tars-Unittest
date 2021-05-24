@@ -17,7 +17,7 @@
 #include "gtest/gtest.h"
 #include "servant/Application.h"
 #include "TarsTest/TestcaseServer/RPCTest.h"
-#include "TarsTest/TestcaseServer/EpsTest.h"
+// #include "TarsTest/TestcaseServer/EpsTest.h"
 #include "TarsTest/TestcaseServer/OneWayRpcTest.h"
 #include "TarsServantName.h"
 #include "stub/DbHandle.h"
@@ -42,13 +42,13 @@ protected:
 
 TEST_F(EndPointTest, consistant_hash_endpoint_normal)
 {
-    CDbHandle::addActiveEndPoint(EPS_TEST_SERVANT_NAME, 10120, EndpointInfo::TCP);
+    CDbHandle::addActiveEndPoint(EPS_TEST_SERVANT_NAME, 10120, TC_Endpoint::TCP);
     
-    CDbHandle::addInactiveEndPoint(EPS_TEST_SERVANT_NAME, 10411, EndpointInfo::TCP);
+    CDbHandle::addInactiveEndPoint(EPS_TEST_SERVANT_NAME, 10411, TC_Endpoint::TCP);
     
-    CDbHandle::addInactiveEndPoint(EPS_TEST_SERVANT_NAME, 10412, EndpointInfo::TCP);
+    CDbHandle::addInactiveEndPoint(EPS_TEST_SERVANT_NAME, 10412, TC_Endpoint::TCP);
     
-    EpsTestPrx prx  = _comm->stringToProxy<EpsTestPrx> (EPS_TEST_SERVANT_NAME);
+    RPCTestPrx prx  = _comm->stringToProxy<RPCTestPrx> (EPS_TEST_SERVANT_NAME);
 
     int res = prx->tars_consistent_hash(2)->test();
 
@@ -58,13 +58,13 @@ TEST_F(EndPointTest, consistant_hash_endpoint_normal)
 
 TEST_F(EndPointTest, given_servant_endpoint_added_to_registry_when_call_rpc_by_servant_name_then_rpc_response)
 {
-    CDbHandle::addActiveEndPoint(EPS_TEST_SERVANT_NAME, 10120, EndpointInfo::TCP);
+    CDbHandle::addActiveEndPoint(EPS_TEST_SERVANT_NAME, 10120, TC_Endpoint::TCP);
     
-    CDbHandle::addInactiveEndPoint(EPS_TEST_SERVANT_NAME, 10123, EndpointInfo::TCP);
+    CDbHandle::addInactiveEndPoint(EPS_TEST_SERVANT_NAME, 10123, TC_Endpoint::TCP);
     
-    CDbHandle::addInactiveEndPoint(EPS_TEST_SERVANT_NAME, 10124, EndpointInfo::TCP);
+    CDbHandle::addInactiveEndPoint(EPS_TEST_SERVANT_NAME, 10124, TC_Endpoint::TCP);
                 
-    EpsTestPrx prx  = _comm->stringToProxy<EpsTestPrx> (EPS_TEST_SERVANT_NAME);
+    RPCTestPrx prx  = _comm->stringToProxy<RPCTestPrx> (EPS_TEST_SERVANT_NAME);
 
     int res = prx->test();
 
@@ -75,13 +75,13 @@ TEST_F(EndPointTest, given_servant_endpoint_added_to_registry_when_call_rpc_by_s
 
 TEST_F(EndPointTest, hash_endpoint_normal)
 {
-    CDbHandle::addActiveEndPoint(EPS_TEST_SERVANT_NAME, 10120, EndpointInfo::TCP);
+    CDbHandle::addActiveEndPoint(EPS_TEST_SERVANT_NAME, 10120, TC_Endpoint::TCP);
     
-    CDbHandle::addInactiveEndPoint(EPS_TEST_SERVANT_NAME, 10123, EndpointInfo::TCP);
+    CDbHandle::addInactiveEndPoint(EPS_TEST_SERVANT_NAME, 10123, TC_Endpoint::TCP);
     
-    CDbHandle::addInactiveEndPoint(EPS_TEST_SERVANT_NAME, 10124, EndpointInfo::TCP);
+    CDbHandle::addInactiveEndPoint(EPS_TEST_SERVANT_NAME, 10124, TC_Endpoint::TCP);
     
-    EpsTestPrx prx  = _comm->stringToProxy<EpsTestPrx> (EPS_TEST_SERVANT_NAME);
+    RPCTestPrx prx  = _comm->stringToProxy<RPCTestPrx> (EPS_TEST_SERVANT_NAME);
 
     int res = prx->tars_hash(1)->test();
 
@@ -90,13 +90,13 @@ TEST_F(EndPointTest, hash_endpoint_normal)
 
 TEST_F(EndPointTest, hash_endpoint_expect)
 {
-    CDbHandle::addActiveEndPoint(EPS_TEST_SERVANT_NAME, 10120, EndpointInfo::TCP);
+    CDbHandle::addActiveEndPoint(EPS_TEST_SERVANT_NAME, 10120, TC_Endpoint::TCP);
     
-    CDbHandle::addInactiveEndPoint(EPS_TEST_SERVANT_NAME, 10123, EndpointInfo::TCP);
+    CDbHandle::addInactiveEndPoint(EPS_TEST_SERVANT_NAME, 10123, TC_Endpoint::TCP);
     
-    CDbHandle::addInactiveEndPoint(EPS_TEST_SERVANT_NAME, 10124, EndpointInfo::TCP);
+    CDbHandle::addInactiveEndPoint(EPS_TEST_SERVANT_NAME, 10124, TC_Endpoint::TCP);
     
-    EpsTestPrx prx  = _comm->stringToProxy<EpsTestPrx> (EPS_TEST_SERVANT_NAME);
+    RPCTestPrx prx  = _comm->stringToProxy<RPCTestPrx> (EPS_TEST_SERVANT_NAME);
 
     
     int res = prx->tars_hash(2)->test();
@@ -107,13 +107,13 @@ TEST_F(EndPointTest, hash_endpoint_expect)
 
 TEST_F(EndPointTest, endpoint_cons_hash2)
 {
-    CDbHandle::addActiveEndPoint(EPS_TEST_SERVANT_NAME, 10120, EndpointInfo::TCP);
+    CDbHandle::addActiveEndPoint(EPS_TEST_SERVANT_NAME, 10120, TC_Endpoint::TCP);
     
-    CDbHandle::addInactiveEndPoint(EPS_TEST_SERVANT_NAME, 10123, EndpointInfo::TCP);
+    CDbHandle::addInactiveEndPoint(EPS_TEST_SERVANT_NAME, 10123, TC_Endpoint::TCP);
     
-    CDbHandle::addInactiveEndPoint(EPS_TEST_SERVANT_NAME, 10124, EndpointInfo::TCP);
+    CDbHandle::addInactiveEndPoint(EPS_TEST_SERVANT_NAME, 10124, TC_Endpoint::TCP);
     
-    EpsTestPrx prx  = _comm->stringToProxy<EpsTestPrx> (EPS_TEST_SERVANT_NAME);
+    RPCTestPrx prx  = _comm->stringToProxy<RPCTestPrx> (EPS_TEST_SERVANT_NAME);
 
     int res = prx->tars_consistent_hash(2)->test();
 
@@ -121,9 +121,9 @@ TEST_F(EndPointTest, endpoint_cons_hash2)
 }
 TEST_F(EndPointTest, consistant_hash1_endpoint_staticweight)
 {
-    CDbHandle::addActiveWeight1EndPoint(ONEWAY_RPC_SERVANT_NAME, 10110, EndpointInfo::TCP);
+    CDbHandle::addActiveWeight1EndPoint(ONEWAY_RPC_SERVANT_NAME, 10110, TC_Endpoint::TCP);
         
-    CDbHandle::addInActiveWeight1EndPoint(ONEWAY_RPC_SERVANT_NAME, 10131, EndpointInfo::TCP);
+    CDbHandle::addInActiveWeight1EndPoint(ONEWAY_RPC_SERVANT_NAME, 10131, TC_Endpoint::TCP);
     
     OneWayRpcTestPrx prx  = _comm->stringToProxy<OneWayRpcTestPrx> (ONEWAY_RPC_SERVANT_NAME);
 
@@ -134,9 +134,9 @@ TEST_F(EndPointTest, consistant_hash1_endpoint_staticweight)
 
 TEST_F(EndPointTest, static_weight_endpoint)
 {
-    CDbHandle::addActiveWeight1EndPoint(ONEWAY_RPC_SERVANT_NAME, 10110, EndpointInfo::TCP);
+    CDbHandle::addActiveWeight1EndPoint(ONEWAY_RPC_SERVANT_NAME, 10110, TC_Endpoint::TCP);
     
-    CDbHandle::addInActiveWeight1EndPoint(ONEWAY_RPC_SERVANT_NAME, 10131, EndpointInfo::TCP);
+    CDbHandle::addInActiveWeight1EndPoint(ONEWAY_RPC_SERVANT_NAME, 10131, TC_Endpoint::TCP);
         
     OneWayRpcTestPrx prx  = _comm->stringToProxy<OneWayRpcTestPrx> (ONEWAY_RPC_SERVANT_NAME);
 
@@ -148,9 +148,9 @@ TEST_F(EndPointTest, static_weight_endpoint)
 
 TEST_F(EndPointTest, hash_endpoint_staticweight1)
 {
-    CDbHandle::addActiveWeight1EndPoint(ONEWAY_RPC_SERVANT_NAME, 10110, EndpointInfo::TCP);
+    CDbHandle::addActiveWeight1EndPoint(ONEWAY_RPC_SERVANT_NAME, 10110, TC_Endpoint::TCP);
     
-    CDbHandle::addInActiveWeight1EndPoint(ONEWAY_RPC_SERVANT_NAME, 10131, EndpointInfo::TCP);
+    CDbHandle::addInActiveWeight1EndPoint(ONEWAY_RPC_SERVANT_NAME, 10131, TC_Endpoint::TCP);
     
     OneWayRpcTestPrx prx  = _comm->stringToProxy<OneWayRpcTestPrx> (ONEWAY_RPC_SERVANT_NAME);
 
@@ -197,9 +197,9 @@ TEST_F(EndPointTest, given_servant_not_exist_when_call_rpc_by_servant_name_then_
 TEST_F(EndPointTest, consistanthash_endpoint_inactive)
 {
 
-    CDbHandle::addActiveWeight1EndPoint(BASE_RPC_SERVANT_NAME, 10103, EndpointInfo::TCP);
+    CDbHandle::addActiveWeight1EndPoint(BASE_RPC_SERVANT_NAME, 10103, TC_Endpoint::TCP);
 
-    CDbHandle::addInActiveWeight1EndPoint(BASE_RPC_SERVANT_NAME, 10124, EndpointInfo::TCP);
+    CDbHandle::addInActiveWeight1EndPoint(BASE_RPC_SERVANT_NAME, 10124, TC_Endpoint::TCP);
 
     RPCTestPrx prx  = _comm->stringToProxy<RPCTestPrx> (BASE_RPC_SERVANT_NAME);
 

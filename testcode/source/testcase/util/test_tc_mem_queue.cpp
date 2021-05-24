@@ -11,7 +11,7 @@
 #include "util/tc_shm.h"
 #include "util/tc_thread_pool.h"
 #include "util/tc_common.h"
-#include "util/tc_functor.h"
+// #include "util/tc_functor.h"
 #include <sstream>
 #include <iostream>
 
@@ -24,7 +24,6 @@ TC_SemMutex  semLock;
 TC_MemQueue  memQueue;
 
 /**
- * 线程调用过程
  * @param s
  * @param i
  */
@@ -36,12 +35,12 @@ void writeQueue()
         TC_LockT<TC_SemMutex> l(semLock);
         if(memQueue.push_back(TC_Common::tostr(i)))
         {
-            cout << pthread_self() << " | writeQueue OK " << i << ":" << memQueue.elementCount() << endl;
+            // cout << pthread_self() << " | writeQueue OK " << i << ":" << memQueue.elementCount() << endl;
             i--;
         }
         else
         {
-            cout << pthread_self() << " | writeQueue FULL " << i << endl;
+            // cout << pthread_self() << " | writeQueue FULL " << i << endl;
             return;
         }
     }
@@ -55,11 +54,11 @@ void readQueue()
         TC_LockT<TC_SemMutex> l(semLock);
         if(memQueue.pop_front(s))
         {
-            cout << pthread_self() << " | readQueue OK " << s << endl;
+            // cout << pthread_self() << " | readQueue OK " << s << endl;
         }
         else
         {
-            cout << pthread_self() << " | readQueue EMPTY" << endl;
+            // cout << pthread_self() << " | readQueue EMPTY" << endl;
             // sleep(1);
             return;
         }
@@ -88,11 +87,11 @@ TEST(TarsUtilTestcase, UT_TC_MemQueue)
         twpool.init(4);
         twpool.start();
 
-        TC_Functor<void> w(writeQueue);
-        TC_Functor<void>::wrapper_type iwt(w);
+        // TC_Functor<void> w(writeQueue);
+        // TC_Functor<void>::wrapper_type iwt(w);
         for(size_t i = 0; i < twpool.getThreadNum(); i++)
         {
-            twpool.exec(iwt);
+            twpool.exec(writeQueue);
         }
 
         twpool.waitForAllDone();
@@ -103,12 +102,12 @@ TEST(TarsUtilTestcase, UT_TC_MemQueue)
         trpool.init(4);
         trpool.start();
 
-        TC_Functor<void> r(readQueue);
-        TC_Functor<void>::wrapper_type irt(r);
+        // TC_Functor<void> r(readQueue);
+        // TC_Functor<void>::wrapper_type irt(r);
 
         for(size_t i = 0; i < trpool.getThreadNum(); i++)
         {
-            trpool.exec(irt);
+            trpool.exec(readQueue);
         }
 
         trpool.waitForAllDone();

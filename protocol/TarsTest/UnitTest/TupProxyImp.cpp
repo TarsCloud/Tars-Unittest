@@ -21,7 +21,7 @@
 #include "util/tc_parsepara.h"
 #include "util/tc_config.h"
 #include "util/tc_hash_fun.h"
-#include "util/tc_atomic.h"
+// #include "util/tc_atomic.h"
 #include "util/tc_base64.h"
 //#include "TarsServantName.h"
 
@@ -29,7 +29,7 @@
 using namespace std;
 
 //////////////////////////////////////////////////////
-TC_Atomic g_requestId;
+std::atomic<int> g_requestId;
 
 //////////////////////////////////////////////////////
 TupProxyImp::TupProxyImp()
@@ -227,7 +227,7 @@ void TupProxyImp::tupAsyncCall(RequestPacket *tup, const AServantPrx &proxy, con
 {
 
         //用自己的requestid, 回来的时候好匹配
-        int requestId = g_requestId.add(1);
+        int requestId = ++g_requestId;
 
         try
         {
@@ -303,11 +303,11 @@ int TupProxyImp::doResponse(ReqMessagePtr resp)
         {
                 TupCallback* cb = dynamic_cast<TupCallback*>(resp->callback.get());
 
-                vector<char>& buff = resp->response.sBuffer;
+                vector<char>& buff = resp->response->sBuffer;
 
                 if (!buff.empty())
                 {
-                        if( resp->response.iVersion == TARSVERSION )  //1是jce协议
+                        if( resp->response->iVersion == TARSVERSION )  //1是jce协议
                         {
                                 cb->doResponse_jce(buff);
 								 //LOG->debug()<<"TupProxyImp::doResponse jce"<<endl;

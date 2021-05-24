@@ -37,62 +37,62 @@ http测试，测试原生接口的POST和GET两种方式
 校验返回码和内容
 ****************************************************/
 
-/**
-* @brief 请求执行方法
-* @param sSendBuffer
-* @param tcpClient
-* @param stHttpRsp
-* @param iTimeout
-* @return int(返回码，0是成功，-3为超时)
-*/
-int doRequest(const string& sSendBuffer,TC_TCPClient&tcpClient, TC_HttpResponse &stHttpRsp, int iTimeout)
-{
-    int64_t tBegin = TC_TimeProvider::getInstance()->getNowMs();
+// /**
+// * @brief 请求执行方法
+// * @param sSendBuffer
+// * @param tcpClient
+// * @param stHttpRsp
+// * @param iTimeout
+// * @return int(返回码，0是成功，-3为超时)
+// */
+// int doRequest(const string& sSendBuffer,TC_TCPClient&tcpClient, TC_HttpResponse &stHttpRsp, int iTimeout)
+// {
+//     int64_t tBegin = TC_TimeProvider::getInstance()->getNowMs();
 
-	int iRet = tcpClient.send(sSendBuffer.c_str(), sSendBuffer.length());
-	if(iRet != TC_ClientSocket::EM_SUCCESS)
-	{
-		return iRet;
-	}
+// 	int iRet = tcpClient.send(sSendBuffer.c_str(), sSendBuffer.length());
+// 	if(iRet != TC_ClientSocket::EM_SUCCESS)
+// 	{
+// 		return iRet;
+// 	}
 
-	stHttpRsp.reset();
+// 	stHttpRsp.reset();
 
-	string sBuffer;
+// 	string sBuffer;
 
-	char *sTmpBuffer = new char[10240];
-	size_t iRecvLen  = 10240;
+// 	char *sTmpBuffer = new char[10240];
+// 	size_t iRecvLen  = 10240;
 
-	while(true)
-	{
-		iRecvLen = 10240;
+// 	while(true)
+// 	{
+// 		iRecvLen = 10240;
 
-		iRet = tcpClient.recv(sTmpBuffer, iRecvLen);
+// 		iRet = tcpClient.recv(sTmpBuffer, iRecvLen);
 
-		if(iRet == TC_ClientSocket::EM_SUCCESS)
-		sBuffer.append(sTmpBuffer, iRecvLen);
+// 		if(iRet == TC_ClientSocket::EM_SUCCESS)
+// 		sBuffer.append(sTmpBuffer, iRecvLen);
 
-		switch(iRet)
-		{
-		case TC_ClientSocket::EM_SUCCESS:
-			if(stHttpRsp.incrementDecode(sBuffer))
-			{
-				delete []sTmpBuffer;
-				return TC_ClientSocket::EM_SUCCESS;
-			}
-			continue;
-		case TC_ClientSocket::EM_CLOSE:
-			delete []sTmpBuffer;
-			stHttpRsp.incrementDecode(sBuffer);
-			return TC_ClientSocket::EM_SUCCESS;
-		default:
-			delete []sTmpBuffer;
-			return iRet;
-		}
-	}
+// 		switch(iRet)
+// 		{
+// 		case TC_ClientSocket::EM_SUCCESS:
+// 			if(stHttpRsp.incrementDecode(sBuffer))
+// 			{
+// 				delete []sTmpBuffer;
+// 				return TC_ClientSocket::EM_SUCCESS;
+// 			}
+// 			continue;
+// 		case TC_ClientSocket::EM_CLOSE:
+// 			delete []sTmpBuffer;
+// 			stHttpRsp.incrementDecode(sBuffer);
+// 			return TC_ClientSocket::EM_SUCCESS;
+// 		default:
+// 			delete []sTmpBuffer;
+// 			return iRet;
+// 		}
+// 	}
 
-    TLOGDEBUG("Http request time cost: "<< " | " << TC_TimeProvider::getInstance()->getNowMs() - tBegin << "(ms)" << endl);
-	return 0;
-}
+//     TLOGDEBUG("Http request time cost: "<< " | " << TC_TimeProvider::getInstance()->getNowMs() - tBegin << "(ms)" << endl);
+// 	return 0;
+// }
 
 /**
 * @brief Get方法
@@ -114,16 +114,15 @@ int th_doGet(string& strOut)
 	stHttpReq.setHeader("x-tx-host", "");
 	stHttpReq.setHeader("Connection", "Keep-Alive"); 
 	stHttpReq.setGetRequest(sServer1);
-    string sSendBuffer = stHttpReq.encode();
+    // string sSendBuffer = stHttpReq.encode();
 	
 	TC_HttpResponse stHttpRsp;
 	
-	 
 	int iRet = -1;
 	try
 	  {
             
-		iRet = doRequest(sSendBuffer, tcpClient1, stHttpRsp, 3000); 	 
+		iRet = stHttpReq.doRequest(tcpClient1, stHttpRsp); 	 
 		if (iRet ==0)
 		{
             strOut=stHttpRsp.getContent();
@@ -172,13 +171,13 @@ int th_doPost(string& strOut)
     sBuff="{\"key1\":\"value1\" \"key2\":\"value2\"}";
 	
     stHttpReq.setPostRequest(sServer1, sBuff);
-    string sSendBuffer = stHttpReq.encode();
+    // string sSendBuffer = stHttpReq.encode();
 	TC_HttpResponse stHttpRsp;
 	
 	try
 	  {
             
-		iRet = doRequest(sSendBuffer, tcpClient1, stHttpRsp, 3000); 	 
+		iRet = stHttpReq.doRequest(tcpClient1, stHttpRsp); 	 
 		if (iRet ==0)
 		{
             strOut=stHttpRsp.getContent();

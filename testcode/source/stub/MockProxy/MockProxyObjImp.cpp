@@ -24,11 +24,15 @@ using namespace std;
 
 namespace mockProxy
 {
-    void mockRequestFunc(const RequestPacket& request, string& buff);
-    size_t mockResponseFunc(const char* recvBuffer, size_t length, list<ResponsePacket>& done);
+
+    vector<char> mockRequestFunc(RequestPacket& request, Transceiver *);
+    TC_NetWorkBuffer::PACKET_TYPE mockResponseFunc(TC_NetWorkBuffer &in, ResponsePacket& done);
+
+    // void mockRequestFunc(const RequestPacket& request, string& buff);
+    // size_t mockResponseFunc(const char* recvBuffer, size_t length, list<ResponsePacket>& done);
 
     //////////////////////////////////////////////////////
-    TC_Atomic MockProxyObjImp::requestId = 0;
+    std::atomic<int> MockProxyObjImp::requestId = {0};
 
     static string outfill(const string& s, char c = ' ', int n = 29)
     {
@@ -37,7 +41,7 @@ namespace mockProxy
     void MockProxyObjImp::initialize()
     {
         //initialize servant here:
-        _sMockServerObjName =TC_Common::strto<string>(Application::getConfig().get("/tars/mockproxy<mock-server-obj>", "MockProxy.MockServer.MockObj"));
+        _sMockServerObjName =TC_Common::strto<string>(this->getApplication()->getConfig().get("/tars/mockproxy<mock-server-obj>", "MockProxy.MockServer.MockObj"));
         cout << outfill("mock-server-obj") << _sMockServerObjName << endl;
     }
 
@@ -55,7 +59,7 @@ namespace mockProxy
         {
             MockProxyObjCallback* cb = dynamic_cast<MockProxyObjCallback*>(resp->callback.get());
 
-            ResponsePacket  response = resp->response;
+            shared_ptr<ResponsePacket> response = resp->response;
 
             cb->doResponse(response);
         }
@@ -116,7 +120,7 @@ namespace mockProxy
      */
     void MockProxyObjImp::replaceRequestId(const RequestPacket &oldRequest, RequestPacket &newRequest)
     {
-        int newRequestId = requestId.add(1);
+        int newRequestId = ++requestId;
 
         TLOGINFO("[MockProxy]Create new request Id: "<< newRequestId <<endl);
 
@@ -150,23 +154,53 @@ namespace mockProxy
                                 (const char*)(&requestPacket.sBuffer[0]), requestPacket.sBuffer.size(),    cb);
     }
 
-    void mockRequestFunc(const RequestPacket& request, string& buff)
+
+    vector<char> mockRequestFunc(RequestPacket& request, Transceiver *)
     {
+        vector<char> buff;
+
         Int32 iHeaderLen = htonl(sizeof(tars::Int32) + request.sBuffer.size());
 
-        buff.clear();
+        // buff.clear();
 
-        buff.reserve(sizeof(tars::Int32) + request.sBuffer.size());
+        buff.resize(sizeof(tars::Int32) + request.sBuffer.size());
 
-        buff.append((const char*)&iHeaderLen, sizeof(tars::Int32));
+        memcpy(buff.data(), (const char *)&iHeaderLen, sizeof(tars::Int32));
 
-        buff.append((const char*)&request.sBuffer[0], request.sBuffer.size());
+        memcpy(buff.data() + sizeof(tars::Int32) ,(const char*)&request.sBuffer[0], request.sBuffer.size());
 
-        TLOGINFO("[MockProxy]mockRequestFunc buff[" << buff.size() << "]: " << buff <<endl);
+        // buff.append((const char *)&iHeaderLen, sizeof(tars::Int32));
+
+        // buff.append((const char*)&request.sBuffer[0], request.sBuffer.size());
+
+        // TLOGINFO("[MockProxy]mockRequestFunc buff[" << buff.size() << "]: " << buff <<endl);
+
+        return buff;
     }
 
-    size_t mockResponseFunc(const char* recvBuffer, size_t length, list<ResponsePacket>& done)
+    TC_NetWorkBuffer::PACKET_TYPE mockResponseFunc(TC_NetWorkBuffer &in, ResponsePacket& done)
     {
-        return ProxyProtocol::tarsResponse(recvBuffer, length, done);
+        return ProxyProtocol::tarsResponse(in, done);
+
     }
+
+    // void mockRequestFunc(const RequestPacket& request, string& buff)
+    // {
+    //     Int32 iHeaderLen = htonl(sizeof(tars::Int32) + request.sBuffer.size());
+
+    //     buff.clear();
+
+    //     buff.reserve(sizeof(tars::Int32) + request.sBuffer.size());
+
+    //     buff.append((const char*)&iHeaderLen, sizeof(tars::Int32));
+
+    //     buff.append((const char*)&request.sBuffer[0], request.sBuffer.size());
+
+    //     TLOGINFO("[MockProxy]mockRequestFunc buff[" << buff.size() << "]: " << buff <<endl);
+    // }
+
+    // size_t mockResponseFunc(const char* recvBuffer, size_t length, list<ResponsePacket>& done)
+    // {
+    //     return ProxyProtocol::tarsResponse(recvBuffer, length, done);
+    // }
 }

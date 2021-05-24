@@ -48,7 +48,7 @@ namespace mockProxy
          * 异步回调处理函数
          * @param responsePacket
          */
-        virtual void doResponse(ResponsePacket&  responsePacket);
+        virtual void doResponse(shared_ptr<ResponsePacket>  responsePacket);
 
         /**
          * 设置RequestId，在回应消息时，需要使用

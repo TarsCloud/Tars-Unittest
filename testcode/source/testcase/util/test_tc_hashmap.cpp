@@ -102,7 +102,7 @@ void testSendRand()
         v[index].first  = s.str();
         v[index].second = s.str();
 
-        cout << "set:" << v[index].first << ":" << v[index].second << ":" << g_hmap.size() << ":" << g_hmap.dirtyCount() << endl;
+        // cout << "set:" << v[index].first << ":" << v[index].second << ":" << g_hmap.size() << ":" << g_hmap.dirtyCount() << endl;
 
         int ret = g_hmap.set(v[index].first, v[index].second, true, vRecords);
         assert(ret == 0);

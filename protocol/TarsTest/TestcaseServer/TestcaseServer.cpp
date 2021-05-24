@@ -14,6 +14,7 @@
  * specific language governing permissions and limitations under the License.
  */
 
+#include "util/tc_network_buffer.h"
 #include "TestcaseServer.h"
 #include "HttpDemoImp.h"
 #include "RPCTestImp.h"
@@ -31,84 +32,84 @@ using namespace std;
 using namespace mockProxy;
 
 TestcaseServer g_app;
-struct PushProtocol
-{
-	static int parse(string &in, string &out)
-	{
-		if(in.length() < sizeof(unsigned int))
-		{
-			return TC_EpollServer::PACKET_LESS;
-		}
+// struct PushProtocol
+// {
+// 	static int parse(string &in, string &out)
+// 	{
+// 		if(in.length() < sizeof(unsigned int))
+// 		{
+// 			return TC_NetWorkBuffer::PACKET_LESS;
+// 		}
 
-		unsigned int iHeaderLen;
+// 		unsigned int iHeaderLen;
 
-		memcpy(&iHeaderLen, in.c_str(), sizeof(unsigned int));
+// 		memcpy(&iHeaderLen, in.c_str(), sizeof(unsigned int));
 
-		iHeaderLen = ntohl(iHeaderLen);
+// 		iHeaderLen = ntohl(iHeaderLen);
 
-		if(iHeaderLen < (unsigned int)(sizeof(unsigned int))|| iHeaderLen > 1000000)
-		{
-			return TC_EpollServer::PACKET_ERR;
-		}
+// 		if(iHeaderLen < (unsigned int)(sizeof(unsigned int))|| iHeaderLen > 1000000)
+// 		{
+// 			return TC_NetWorkBuffer::PACKET_ERR;
+// 		}
 
-		if((unsigned int)in.length() < iHeaderLen)
-		{
-			return TC_EpollServer::PACKET_LESS;
-		}
+// 		if((unsigned int)in.length() < iHeaderLen)
+// 		{
+// 			return TC_NetWorkBuffer::PACKET_LESS;
+// 		}
 
-		out = in.substr(0, iHeaderLen);
+// 		out = in.substr(0, iHeaderLen);
 
-		in  = in.substr(iHeaderLen);
+// 		in  = in.substr(iHeaderLen);
 
-		return TC_EpollServer::PACKET_FULL;
-	}
-};
+// 		return TC_NetWorkBuffer::PACKET_FULL;
+// 	}
+// };
 
-struct HttpProtocol
-{
-    /**
-     * 解析http请求
-     * @param in
-     * @param out
-     *
-     * @return int
-     */
-    static int parseHttp(string &in, string &out)
-    {
-        try
-        {
-            //判断请求是否是HTTP请求
-            bool b = TC_HttpRequest ::checkRequest(in.c_str(), in.length());
-            //完整的HTTP请求
-            if(b)
-            {
-                out = in;
-                in  = "";
-                //TLOGDEBUG("out size: " << out.size() << endl);
-                return TC_EpollServer::PACKET_FULL;
-            }
-            else
-            {
-                return TC_EpollServer::PACKET_LESS;
-            }
-        }
-        catch(exception &ex)
-        {
-            return TC_EpollServer::PACKET_ERR;
-        }
+// struct HttpProtocol
+// {
+//     /**
+//      * 解析http请求
+//      * @param in
+//      * @param out
+//      *
+//      * @return int
+//      */
+//     static int parseHttp(string &in, string &out)
+//     {
+//         try
+//         {
+//             //判断请求是否是HTTP请求
+//             bool b = TC_HttpRequest ::checkRequest(in.c_str(), in.length());
+//             //完整的HTTP请求
+//             if(b)
+//             {
+//                 out = in;
+//                 in  = "";
+//                 //TLOGDEBUG("out size: " << out.size() << endl);
+//                 return TC_EpollServer::PACKET_FULL;
+//             }
+//             else
+//             {
+//                 return TC_EpollServer::PACKET_LESS;
+//             }
+//         }
+//         catch(exception &ex)
+//         {
+//             return TC_EpollServer::PACKET_ERR;
+//         }
 
-        return TC_EpollServer::PACKET_LESS;             //表示收到的包不完全
-    }
+//         return TC_EpollServer::PACKET_LESS;             //表示收到的包不完全
+//     }
 
-};
+// };
 
-struct MockProtocol
-{
-	static int parse(string &in, string &out)
-	{
-	    return AppProtocol::parse(in,out);
-	}
-};
+// struct MockProtocol
+// {
+// 	static int parse(string &in, string &out)
+// 	{
+// 	    return AppProtocol::parse(in,out);
+// 	}
+// };
 
 
 /////////////////////////////////////////////////////////////////
@@ -120,16 +121,16 @@ TestcaseServer::initialize()
 //    addServant<QueryImp>(ServerConfig::Application + "." + ServerConfig::ServerName + ".QueryObj");
 
     addServant<HttpDemoImp>(ServerConfig::Application + "." + ServerConfig::ServerName + ".HttpDemoObj");
-	addServantProtocol(ServerConfig::Application + "." + ServerConfig::ServerName + ".HttpDemoObj", &HttpProtocol::parseHttp);
+	addServantProtocol(ServerConfig::Application + "." + ServerConfig::ServerName + ".HttpDemoObj", &TC_NetWorkBuffer::parseHttp);
 
 	addServant<MockProxyObjImp>(ServerConfig::Application + "." + ServerConfig::ServerName + ".MockProxyObj");
-	addServantProtocol(ServerConfig::Application + "." + ServerConfig::ServerName + ".MockProxyObj", &MockProtocol::parse);
+	addServantProtocol(ServerConfig::Application + "." + ServerConfig::ServerName + ".MockProxyObj", &AppProtocol::parse);
 
 	addServant<RPCTestImp>(ServerConfig::Application + "." + ServerConfig::ServerName + ".RPCTestObj");
 	addServant<RPCTestImp>(ServerConfig::Application + "." + ServerConfig::ServerName + ".UdpRPCObj");
 
 	addServant<TestPushServantImp>(ServerConfig::Application + "." + ServerConfig::ServerName + ".PushObj");
-    addServantProtocol(ServerConfig::Application + "." + ServerConfig::ServerName + ".PushObj", &PushProtocol::parse);
+    addServantProtocol(ServerConfig::Application + "." + ServerConfig::ServerName + ".PushObj", &AppProtocol::parse);
 
     addServant<ConfigImp>(ServerConfig::Application + "." + ServerConfig::ServerName + ".ConfigObj");
     addServant<QueryImp>(ServerConfig::Application + "." + ServerConfig::ServerName + ".QueryObj");
@@ -145,7 +146,7 @@ TestcaseServer::initialize()
 
     TARS_ADD_ADMIN_CMD_NORMAL("CmdToDelete", TestcaseServer::cmdAdd);
 
-    NotifyObserver::getInstance()->unregisterNotify("CmdToDelete", this);
+    getNotifyObserver()->unregisterNotify("CmdToDelete", this);
 
     TARS_ADD_ADMIN_CMD_NORMAL("DeletePrefixCmd", TestcaseServer::delTarsViewVersion);
 	
@@ -160,7 +161,7 @@ bool TestcaseServer::cmdAdd(const string& command, const string& params, string&
 
 bool TestcaseServer::delTarsViewVersion(const string& command, const string& params, string& result)
 {
-	NotifyObserver::getInstance()->unregisterPrefix("tars.viewversion", this);
+	getNotifyObserver()->unregisterPrefix("tars.viewversion", this);
 	
 	result = "Delete success!";
 	return true;

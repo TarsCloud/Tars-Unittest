@@ -28,13 +28,13 @@ using namespace tars;
 
 namespace mockProxy
 {
-    void MockProxyObjCallback::doResponse(ResponsePacket&  responsePacket)
+    void MockProxyObjCallback::doResponse(shared_ptr<ResponsePacket> responsePacket)
     {
-        responsePacket.iRequestId = iRequestId;
+        responsePacket->iRequestId = iRequestId;
 
         TarsOutputStream<BufferWriter> os;
 
-        responsePacket.writeTo(os);
+        responsePacket->writeTo(os);
 
         string response;
 

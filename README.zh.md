@@ -10,7 +10,14 @@ Tars-Test单元测试的开发主要基于GoogleTest测试框架，关于GoogleT
 ```
 2、使用说明
 ----
-进入tars-uniittest下的script文件夹内，运行run_test.sh脚本,即可输出用例运行结果：
+
+在tarscpp/build下编译:
+```
+cmake ..
+make -j8
+make run_test
+```
+<!-- 进入tars-uniittest下的script文件夹内，运行run_test.sh脚本,即可输出用例运行结果：
 ```c
 cd ./tars-unittest/script/
 ./run_test.sh 
@@ -22,7 +29,7 @@ cd ./tars-unittest/script/
 目前主要统计servant代码的覆盖率，其他的待完善
 tips: 统计覆盖率时，需要修改编译tarscpp的编译选项(在tarscpp/CMakelists.txt中修改)，添加-fprofile-arcs -ftest-coverage选项，然后重新编译tarscpp代码，以便后续统计覆盖率时能生成gcno和gcda文件
 
-还可以根据具体需求选择选项：-c为测试用例全量编译，-a为测试用例和框架代码全量编译，-d为gdb方式运行等。
+还可以根据具体需求选择选项：-c为测试用例全量编译，-a为测试用例和框架代码全量编译，-d为gdb方式运行等。 -->
 
 3、测试用例添加
 ---

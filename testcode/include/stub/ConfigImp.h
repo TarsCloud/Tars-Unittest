@@ -50,7 +50,7 @@ public:
     {
         string name = "TarsTest.TestcaseServer.config.conf";
 
-        string  fileFullName= "./../../../conf/" + name ;
+        string  fileFullName= "../unittest/conf/" + name ;
 
         string fileContext = TC_File::load2str(fileFullName);
 
