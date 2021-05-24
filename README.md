@@ -11,6 +11,15 @@ Since Tars-Test is based on GoogleTest, you need to install GoogleTest and gener
 [sudo] yum install gtest-devel lcov
 ```
 ### instructions for use
+
+
+在tarscpp/build下编译:
+```
+cmake ..
+make -j8
+make run_test
+```
+<!-- 
 Enter the script folder under unittest(Tars-Test) and run the run_test.sh script to output the use case results:    
 
 ```c
@@ -24,7 +33,7 @@ If you want to get the coverage result, you can add the run the script with opti
 ```
 At present, we support the coverage statistics of servant's code mainly, the rest part is to be improved.  
 Tips:  
-When calculating the coverage, you need to modify the compile option before compiling tarscpp (modified in tarscpp/CMakelists.txt), add the -fprofile-arcs -ftest-coverage option, and then recompile the tarscpp code so that gcno and gcda files can be generated when you run the testcases. 
+When calculating the coverage, you need to modify the compile option before compiling tarscpp (modified in tarscpp/CMakelists.txt), add the -fprofile-arcs -ftest-coverage option, and then recompile the tarscpp code so that gcno and gcda files can be generated when you run the testcases.  -->
 
 ### How to add one testcase 
 The test case code in the current project is mainly in the testcode folder, and subsequent files and test cases can be added as needed. New test cases can reuse existing OBJs, services, and applications. If you need to deploy new services or OBJs, you can add services to the protocol folder. Related code, the new server configuration file can be added to the conf folder.
