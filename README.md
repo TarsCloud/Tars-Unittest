@@ -15,7 +15,7 @@ Since Tars-Test is based on GoogleTest, you need to install GoogleTest and gener
 
 在tarscpp/build下编译:
 ```
-cmake .. -DONLY_LIB=ON
+cmake .. -DONLY_LIB=OFF
 make -j8
 make run-unittest
 ```

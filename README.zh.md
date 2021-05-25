@@ -13,7 +13,7 @@ Tars-Test单元测试的开发主要基于GoogleTest测试框架，关于GoogleT
 
 在tarscpp/build下编译:
 ```
-cmake .. -DONLY_LIB=ON
+cmake .. -DONLY_LIB=OFF
 make -j8
 make run-unittest
 ```
