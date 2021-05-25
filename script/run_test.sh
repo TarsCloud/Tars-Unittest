@@ -10,7 +10,7 @@ bin/statServer --config=../unittest/conf/TarsTest.StatServer.config.conf&
 
 bin/unitTestServer --config=../unittest/conf/TarsTest.UnitTest.config.conf&
 
-cd ../testcase
+# cd ../testcase
 
 if [ "$debug_mode"x == "gdb"x ] ;then
     gdb --args bin/testcase --config=../unittest/conf/TarsTest.TestcaseServer.config.conf
