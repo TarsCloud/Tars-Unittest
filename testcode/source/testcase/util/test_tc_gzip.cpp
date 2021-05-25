@@ -43,7 +43,7 @@ TEST(TarsUtilTestcase, UT_TC_GZip)
         vector<char> v;
         tars::TC_GZip::compress(&file[0], file.size(), v);
 
-        cout << "compress ok, size:" << v.size() << endl;
+        // cout << "compress ok, size:" << v.size() << endl;
 
         vector<char> s1;
         tars::TC_GZip::uncompress(&v[0], v.size(), s1);

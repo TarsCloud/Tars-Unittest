@@ -15,7 +15,7 @@ using namespace TarsTest;
 ostream& display(ostream& os)
 {
 //    cout << &os << endl;
-    os << "display" << endl;
+    // os << "display" << endl;
     return os;
 }
 
@@ -75,7 +75,7 @@ void RollTestThread()
     logger.modFlag(TC_RollLogger::HAS_LEVEL | TC_RollLogger::HAS_PID, true);
     logger.setupThread(&group);
 
-    cout << TC_Common::now2str() << endl;
+    // cout << TC_Common::now2str() << endl;
 	TC_ThreadPool tpoolA;
 	tpoolA.init(10);
 	tpoolA.start();
@@ -91,7 +91,7 @@ void RollTestThread()
 	}
 
 	tpoolA.waitForAllDone();
-    cout << TC_Common::now2str() << endl;
+    // cout << TC_Common::now2str() << endl;
 }
 
 void DayTest( )
@@ -110,7 +110,7 @@ void DayTestThread()
 
     dlogger.setupThread(&group);
 
-    cout << TC_Common::now2str() << endl;
+    // cout << TC_Common::now2str() << endl;
 	TC_ThreadPool tpoolA;
 	tpoolA.init(5);
 	tpoolA.start();
@@ -126,7 +126,7 @@ void DayTestThread()
 	}
 
 	tpoolA.waitForAllDone();
-    cout << TC_Common::now2str() << endl;
+    // cout << TC_Common::now2str() << endl;
 }
 
 TEST(TarsUtilTestcase, UT_TC_Log)

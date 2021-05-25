@@ -110,8 +110,8 @@ TEST_F(TypeTest, test_type_when_client_sync_call_server_by_ip)
     res = prx->echoShort(stReq,stRsp);
     EXPECT_EQ(res, 0);
 
-    int64_t lReq=1;
-    int64_t lRsp;
+    tars::Int64  lReq=1;
+    tars::Int64  lRsp;
     res = prx->echoLong(lReq,lRsp);
     EXPECT_EQ(res, 0);
 
