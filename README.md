@@ -17,7 +17,7 @@ Since Tars-Test is based on GoogleTest, you need to install GoogleTest and gener
 ```
 cmake .. -DONLY_LIB=ON
 make -j8
-make run_test
+make run-unittest
 ```
 <!-- 
 Enter the script folder under unittest(Tars-Test) and run the run_test.sh script to output the use case results:    

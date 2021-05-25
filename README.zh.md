@@ -15,7 +15,7 @@ Tars-Test单元测试的开发主要基于GoogleTest测试框架，关于GoogleT
 ```
 cmake .. -DONLY_LIB=ON
 make -j8
-make run_test
+make run-unittest
 ```
 <!-- 进入tars-uniittest下的script文件夹内，运行run_test.sh脚本,即可输出用例运行结果：
 ```c
