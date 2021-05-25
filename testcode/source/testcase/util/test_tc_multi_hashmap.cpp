@@ -11,7 +11,7 @@
 #include <stdlib.h>
 #include <iostream>
 #include "util/tc_common.h"
-#include <sys/time.h>
+// #include <sys/time.h>
 
 
 using namespace tars;
@@ -24,9 +24,9 @@ namespace {
     
 TC_Shm				g_shm;
 TC_Multi_HashMap	g_hmap;
-bool				g_bSilent = false;		// ÊÇ·ñÎª°²¾²Ä£Ê½£¬²»Êä³öÈÕÖ¾£¬¿ÉÒÔÈ¡µÃ¸ü¸ßµÄËÙ¶È
+bool				g_bSilent = false;		// ï¿½Ç·ï¿½Îªï¿½ï¿½ï¿½ï¿½Ä£Ê½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È¡ï¿½Ã¸ï¿½ï¿½ßµï¿½ï¿½Ù¶ï¿½
 
-// ÆÕÍ¨µÄ¹¦ÄÜ²âÊÔ
+// ï¿½ï¿½Í¨ï¿½Ä¹ï¿½ï¿½Ü²ï¿½ï¿½ï¿½
 struct FunctionTest
 {
 	static void initMem()
@@ -56,7 +56,7 @@ struct FunctionTest
 	}
 };
 
-// ´óÊý¾ÝÁ¿ÐÔÄÜ²âÊÔ
+// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ü²ï¿½ï¿½ï¿½
 struct PerformanceTest
 {
 	static void initMem()
@@ -89,19 +89,19 @@ void set(const string &mk, const string &uk, const string &v, uint8_t version, b
 	TC_Multi_HashMap::DATATYPE eType = (full ? TC_Multi_HashMap::FULL_DATA : TC_Multi_HashMap::PART_DATA);
 
 	timeval tv_1, tv_2;
-	gettimeofday(&tv_1, NULL);
+	TC_Common::gettimeofday(tv_1);
 	
 	int ret = TC_Multi_HashMap::RT_OK;
 	if(uk.empty())
 	{
-		// ÉèÖÃÖ÷keyµÄonly key
+		// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½keyï¿½ï¿½only key
 		ret = g_hmap.set(mk, vRecords);
 	}
 	else
 	{
 		if(v.empty())
 		{
-			// ÉèÖÃÖ÷¼üµÄonly key
+			// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½only key
 			ret = g_hmap.set(mk, uk, eType, head, vRecords);
 		}
 		else
@@ -110,7 +110,7 @@ void set(const string &mk, const string &uk, const string &v, uint8_t version, b
 		}
 	}
 	
-	gettimeofday(&tv_2, NULL);
+	TC_Common::gettimeofday(tv_2);
 	
 	long lTime = 0;
 	if(tv_2.tv_usec < tv_1.tv_usec)
@@ -136,14 +136,14 @@ void get(const string &mk, const string &uk)
 	TC_Multi_HashMap::Value v;
 	if(!uk.empty())
 	{
-		// ¸ù¾ÝÖ÷¼ü²éÑ¯Êý¾Ý
+		// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ñ¯ï¿½ï¿½ï¿½ï¿½
 		int ret = g_hmap.get(mk, uk, v);
 		cout << "get:" << mk << "|" << uk << "|" << v._data._value << "|" 
 			<< (int)v._data._iVersion << "|" << v._data._dirty << "|" << ret << endl;
 	}
 	else
 	{
-		// ²éÖ÷keyÏÂµÄËùÓÐÊý¾Ý
+		// ï¿½ï¿½ï¿½ï¿½keyï¿½Âµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		size_t count = g_hmap.count(mk);
 		cout << "count of " << mk << ": " << count << endl;
 		TC_Multi_HashMap::lock_iterator it = g_hmap.find(mk);
@@ -239,46 +239,46 @@ void list(int type, bool asc = true)
 	switch(type)
 	{
 	case 0:
-		// °´blockÁ´±éÀú
+		// ï¿½ï¿½blockï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		if(asc)
 		{
-			// ÉýÐò
+			// ï¿½ï¿½ï¿½ï¿½
 			it = g_hmap.begin();
 		}
 		else
 		{
-			// ½µÐò
+			// ï¿½ï¿½ï¿½ï¿½
 			it = g_hmap.rbegin();
 		}
 		break;
 	case 1:
-		// °´getÊ±¼äÁ´±éÀú
+		// ï¿½ï¿½getÊ±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		if(asc)
 		{
-			// ÉýÐò
+			// ï¿½ï¿½ï¿½ï¿½
 			it = g_hmap.beginGetTime();
 		}
 		else
 		{
-			// ½µÐò
+			// ï¿½ï¿½ï¿½ï¿½
 			it = g_hmap.rbeginGetTime();
 		}
 		break;
 	case 2:
-		// °´setÊ±¼äÁ´±éÀú
+		// ï¿½ï¿½setÊ±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		if(asc)
 		{
-			// ÉýÐò
+			// ï¿½ï¿½ï¿½ï¿½
 			it = g_hmap.beginSetTime();
 		}
 		else
 		{
-			// ½µÐò
+			// ï¿½ï¿½ï¿½ï¿½
 			it = g_hmap.rbeginSetTime();
 		}
 		break;
 	case 3:
-		// °´ÔàÊý¾ÝÁ´±éÀú
+		// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		it = g_hmap.beginDirty();
 		break;
 	default:
@@ -303,7 +303,7 @@ void batchset(size_t iCount, size_t iAvgRec)
 	vector<TC_Multi_HashMap::Value> vRecords;
 
 	timeval tv_1, tv_2;
-	gettimeofday(&tv_1, NULL);
+	TC_Common::gettimeofday(tv_1);
 
 	for(size_t i = 1; i <= iCount / iAvgRec; i ++)
 	{
@@ -317,7 +317,7 @@ void batchset(size_t iCount, size_t iAvgRec)
 			timeval tv_1, tv_2;
 			if(!g_bSilent)
 			{
-				gettimeofday(&tv_1, NULL);
+				TC_Common::gettimeofday(tv_1);
 			}
 
 			vRecords.clear();
@@ -325,7 +325,7 @@ void batchset(size_t iCount, size_t iAvgRec)
 
 			if(!g_bSilent)
 			{
-				gettimeofday(&tv_2, NULL);
+				TC_Common::gettimeofday(tv_2);
 				long lTime = 0;
 				if(tv_2.tv_usec < tv_1.tv_usec)
 				{
@@ -347,7 +347,7 @@ void batchset(size_t iCount, size_t iAvgRec)
 		}
 	}
 
-	gettimeofday(&tv_2, NULL);
+	TC_Common::gettimeofday(tv_2);
 	long lTime = 0;
 	if(tv_2.tv_usec < tv_1.tv_usec)
 	{
@@ -401,7 +401,7 @@ void batchget(size_t iCount, size_t iAvgRec)
 	TC_Multi_HashMap::Value v;
 
 	timeval tv_1, tv_2;
-	gettimeofday(&tv_1, NULL);
+	TC_Common::gettimeofday(tv_1);
 	
 	for(size_t i = 1; i <= iCount / iAvgRec; i ++)
 	{
@@ -414,14 +414,14 @@ void batchget(size_t iCount, size_t iAvgRec)
 			timeval tv_1, tv_2;
 			if(!g_bSilent)
 			{
-				gettimeofday(&tv_1, NULL);
+				TC_Common::gettimeofday(tv_1);
 			}
 			
 			int ret = g_hmap.get(mk, uk, v);
 			
 			if(!g_bSilent)
 			{
-				gettimeofday(&tv_2, NULL);
+				TC_Common::gettimeofday(tv_2);
 				long lTime = 0;
 				if(tv_2.tv_usec < tv_1.tv_usec)
 				{
@@ -439,7 +439,7 @@ void batchget(size_t iCount, size_t iAvgRec)
 		}
 	}
 	
-	gettimeofday(&tv_2, NULL);
+	TC_Common::gettimeofday(tv_2);
 	long lTime = 0;
 	if(tv_2.tv_usec < tv_1.tv_usec)
 	{
@@ -453,7 +453,7 @@ void batchget(size_t iCount, size_t iAvgRec)
 }
 
 
-// ÄÚ´æ´óÐ¡²âÊÔ£¬²âÊÔÒ»Ð©½á¹¹ÔÚ²»Í¬µÄ»úÆ÷ÉÏËùÕ¼ÓÃ×Ö½ÚÊý
+// ï¿½Ú´ï¿½ï¿½Ð¡ï¿½ï¿½ï¿½Ô£ï¿½ï¿½ï¿½ï¿½ï¿½Ò»Ð©ï¿½á¹¹ï¿½Ú²ï¿½Í¬ï¿½Ä»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Õ¼ï¿½ï¿½ï¿½Ö½ï¿½ï¿½ï¿½
 void testMemSize()
 {
 	cout << "sizeof(int)=" << sizeof(int) << endl;
@@ -518,7 +518,7 @@ int main_test(int argc, char* argv[])
 
 		g_bSilent = option.hasParam("s");
 
-		// Ëæ»úÉèÖÃºÍ»ñÈ¡Ê±Ò²µ±×÷ÐÔÄÜ²âÊÔ
+		// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ÃºÍ»ï¿½È¡Ê±Ò²ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ü²ï¿½ï¿½ï¿½
 		bool bPerfTest = option.hasParam("p");
 		if(bPerfTest)
 		{
@@ -684,7 +684,7 @@ int main_test(int argc, char* argv[])
 			}
 			else
 			{
-				// ²»´ø²ÎÊýµÄÅúÁ¿ÉèÖÃ
+				// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 				batchset();
 			}
 		}

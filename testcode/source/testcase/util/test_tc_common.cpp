@@ -7,7 +7,7 @@
 #include "util/tc_common.h"
 
 #include <iterator>
-#include <sys/time.h>
+// #include <sys/time.h>
 
 
 using namespace std;
@@ -19,19 +19,19 @@ static string outfill(const string& s, char c = ' ', int n = 29)
     return string(abs(n - (int)s.length()), c) + s;
 }
 
-string tm2GMTstr(const time_t &t)
-{
-    struct tm tt;
-    gmtime_r(&t, &tt);
-    #include "gtest/gtest.h"
-#include "servant/Application.h"
-#include "TarsTest/TestcaseServer/RPCTest.h"
-#include "servant/AdminF.h"
-#include "TarsServantName.h"
-return TC_Common::tm2str(tt, "%a, %d %b %Y %H:%M:%S GMT"
+// string tm2GMTstr(const time_t &t)
+// {
+//     struct tm tt;
+//     gmtime_r(&t, &tt);
+//     #include "gtest/gtest.h"
+// #include "servant/Application.h"
+// #include "TarsTest/TestcaseServer/RPCTest.h"
+// #include "servant/AdminF.h"
+// #include "TarsServantName.h"
+// return TC_Common::tm2str(tt, "%a, %d %b %Y %H:%M:%S GMT"
     
-    );
-}
+//     );
+// }
 
 extern char *tzname[2];
 extern long timezone;

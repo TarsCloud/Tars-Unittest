@@ -64,9 +64,10 @@ TEST(ActiveDyeTest, should_response_when_call_active_dyeing)
 		dyeFile.append("_");
 		dyeFile.append(getTime());
 		dyeFile.append(".log");
-                sleep(1);
-		int iRet=access(dyeFile.c_str(), F_OK);
-		EXPECT_EQ(iRet,0);
+        TC_Common::sleep(1);
+		EXPECT_EQ(TC_File::isFileExist(dyeFile), true);
+		// int iRet=access(dyeFile.c_str(), F_OK);
+		// EXPECT_EQ(iRet,0);
 		
 	}
     catch (std::exception & e)
@@ -80,7 +81,7 @@ TEST(ActiveDyeTest, should_response_when_call_active_dyeing)
 		TLOGDEBUG("exception:..." << endl);	
 	}
 
-	sleep(1);	//等待异步写日志线程同步日志数据到tarlog
+	TC_Common::sleep(1);	//等待异步写日志线程同步日志数据到tarlog
 	
 	TLOGDEBUG("Active dyeing time cost: "<< " | " << TC_TimeProvider::getInstance()->getNowMs() - tBegin << "(ms)" << endl);
 	

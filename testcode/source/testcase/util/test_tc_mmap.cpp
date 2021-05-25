@@ -35,7 +35,7 @@ void testWrite(const string &s)
     mmap.mmap("mmap.dat", 1000);
     memcpy(mmap.getPointer(), s.c_str(), s.length());
 
-    sleep(10);
+    TC_Common::sleep(10);
 
     mmap.munmap();
 }
@@ -59,9 +59,9 @@ void main_test(int argc, char *argv[])
     TC_Option option;
     option.decode(argc, argv);
 
-    int pagesize = sysconf(_SC_PAGESIZE);
+    // int pagesize = sysconf(_SC_PAGESIZE);
 
-    cout << "pagesize:" << pagesize << endl;
+    // cout << "pagesize:" << pagesize << endl;
 
     if(option.getValue("test") == "create")
     {

@@ -32,19 +32,19 @@ extern "C" void RunTestCaseServer(int argc, char* argv[]);
 int main(int argc, char* argv[])
 {
     RunTestCaseServer(argc, argv);
-    sleep(2);
+    TC_Common::sleep(2);
     testing::GTEST_FLAG(output)="xml:./../../../taf_result.xml";
     testing::GTEST_FLAG(filter)="**";
 
     testing::InitGoogleTest(&argc, argv);
     RUN_ALL_TESTS();
-    sleep(2);
+    TC_Common::sleep(2);
     ServerAdmin().shutdown(STAT_SERVER_ADMIN_NAME_ENDPOINT);
     ServerAdmin().shutdown(LOG_SERVER_ADMIN_NAME_ENDPOINT);
     ServerAdmin().shutdown(UNIT_TEST_ADMIN_NAME_ENDPOINT)
                  .shutdown(TEST_CASE_ADMIN_NAME_ENDPOINT);
                  
-    sleep(2);
+    TC_Common::sleep(2);
 
     return 0;
 }

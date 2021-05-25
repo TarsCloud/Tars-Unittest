@@ -28,7 +28,15 @@
 
 using namespace tars;
 
+#if TARGET_PLATFORM_IOS
+typedef TarsHashMap<StatMicMsgHead, StatMicMsgBody, ThreadLockPolicy,MemStorePolicy> HashMap;//FileStorePolicy
+#elif TARGET_PLATFORM_WINDOWS
+typedef TarsHashMap<StatMicMsgHead, StatMicMsgBody, ThreadLockPolicy,FileStorePolicy> HashMap;//FileStorePolicy
+#else
 typedef TarsHashMap<StatMicMsgHead, StatMicMsgBody, ThreadLockPolicy,ShmStorePolicy> HashMap;//FileStorePolicy
+#endif
+
+// typedef TarsHashMap<StatMicMsgHead, StatMicMsgBody, ThreadLockPolicy,ShmStorePolicy> HashMap;//FileStorePolicy
 
 typedef std::map<tars::StatMicMsgHead, tars::StatMicMsgBody, std::less<tars::StatMicMsgHead>> StatMsg;
 

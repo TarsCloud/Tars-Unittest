@@ -44,7 +44,7 @@ TEST(TarsUtilTestcase, UT_TC_Singleton)
 //        B::getInstance()->test();
 
         cout << TC_TimeProvider::getInstance()->getNow() << endl;
-        sleep(1);
+        TC_Common::sleep(1);
 
 }
 

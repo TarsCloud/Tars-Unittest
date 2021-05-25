@@ -78,7 +78,7 @@ TEST_F(SimpleRpcTest, should_response_rpc_when_client_async_call_server_by_ip)
     SimpleRpcObjCallbackPtr cbp = new SimpleRpcObjCallback();
     prx -> async_queryTest(cbp,stReq);
 
-    sleep(1);
+    TC_Common::sleep(1);
 
 }
 

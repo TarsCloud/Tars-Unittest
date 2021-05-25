@@ -86,10 +86,11 @@ TEST(LoggerTest, should_response_when_call_logger)
 		int iRet=logger();
 		EXPECT_EQ(iRet, 0);
 
-	        sleep(1);	
-                int iRes=access(logFile.c_str(), F_OK);
+	    TC_Common::sleep(1);	
+		EXPECT_EQ(TC_File::isFileExist(logFile), true);
+                // int iRes=access(logFile.c_str(), F_OK);
 		
-		EXPECT_EQ(iRes, 0);
+		// EXPECT_EQ(iRes, 0);
 		
 	}
 	catch(exception &ex)

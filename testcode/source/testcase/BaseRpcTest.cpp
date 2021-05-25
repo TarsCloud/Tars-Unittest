@@ -88,7 +88,7 @@ TEST_F(BaseRpcTest, should_response_rpc_when_client_async_call_server_by_ip)
 
     prx -> async_test(cbp);
 
-    sleep(1);
+    TC_Common::sleep(1);
 
     EXPECT_TRUE(isCallbackCalled);
 }

@@ -22,7 +22,7 @@ public:
         bTerminate = false;
     }
     /**
-     * ½áÊøÏß³Ì
+     * ï¿½ï¿½ï¿½ï¿½ï¿½ß³ï¿½
      */
     void terminate()
     {
@@ -39,7 +39,7 @@ public:
         cout << "doSomething" << endl;
     }
     /**
-     * ÔËĞĞ
+     * ï¿½ï¿½ï¿½ï¿½
      */
 protected:
     virtual void run() 
@@ -65,7 +65,7 @@ TEST(TarsUtilTestcase, UT_TC_Thread)
     MyThread mt;
     mt.start();
 
-    sleep(5);
+    TC_Common::sleep(5);
 
     mt.terminate();
     mt.getThreadControl().join();

@@ -31,6 +31,8 @@ using namespace TarsTest;
 
 namespace TarsTest  {
 
+#if !TARGET_PLATFORM_WINDOWS
+
 TEST(TarsUtilTestcase, UT_TC_GZip)
 {
 
@@ -48,8 +50,9 @@ TEST(TarsUtilTestcase, UT_TC_GZip)
 
         assert(file == s1);
     }
-
 }
+
+#endif
 
 
 }

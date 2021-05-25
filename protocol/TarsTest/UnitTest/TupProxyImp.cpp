@@ -280,7 +280,7 @@ void TupProxyImp::tupAsyncCall(RequestPacket *tup, const AServantPrx &proxy, con
                 _iNum++;
                 if(_iNum == 100000)
                 {
-                    LOG->error()<<"time:"<<pthread_self()<<"|"<<TC_TimeProvider::getInstance()->getNowMs()-_iTime<<endl;
+                    LOG->error()<<"time:"<< std::this_thread::get_id() <<"|"<<TC_TimeProvider::getInstance()->getNowMs()-_iTime<<endl;
                     _iTime=TC_TimeProvider::getInstance()->getNowMs();
                     _iNum=0;
                 }

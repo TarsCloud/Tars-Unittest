@@ -223,7 +223,7 @@ TEST_F(PushTest, given_push_call_back_when_connected_then_client_will_recieve_pu
     TestPushCallBackPtr cb = new TestPushCallBack();
     prx->rpc_call_async(prx->tars_gen_requestid(), "printResult", buf.c_str(), buf.length(), cb);
 
-    sleep(1);
+    TC_Common::sleep(1);
 
     EXPECT_TRUE(isPushCallbackCalled);
 }

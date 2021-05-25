@@ -44,24 +44,6 @@ macro(build_unitest_lib MODULE )
     else(TARS_LIST)
         add_library(${MODULE} ${DIR_SRCS})
     endif(TARS_LIST)
-
-    # target_link_libraries(${MODULE} tarsservant tarsutil)
-
-    # if(TARS_SSL)
-    #     target_link_libraries(${MODULE} tarsservant tarsutil ${LIB_SSL} ${LIB_CRYPTO})
-
-    #     if(WIN32)
-    #         target_link_libraries(${MODULE} Crypt32)
-    #     endif()
-    # endif()
-
-    # if(TARS_HTTP2)
-    #     target_link_libraries(${MODULE} ${LIB_HTTP2})
-    # endif()
-
-    # if(TARS_GPERF)
-    #     target_link_libraries(${MODULE} ${LIB_GPERF})
-    # endif(TARS_GPERF)
                 
 endmacro()
 

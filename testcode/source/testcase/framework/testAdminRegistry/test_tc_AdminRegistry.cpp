@@ -63,11 +63,11 @@ void Test1::th_dohandle(int excut_num)
         }
         catch(TC_Exception &e)
         {
-            EXPECT_TRUE(false) << "pthread id: " << pthread_self() << "id: " << i << "exception: " << e.what() << endl;
+            EXPECT_TRUE(false) << "pthread id: " << std::this_thread::get_id() << "id: " << i << "exception: " << e.what() << endl;
         }
         catch(...)
         {
-            EXPECT_TRUE(false) << "pthread id: " << pthread_self() << "id: " << i << "unknown exception." << endl;
+            EXPECT_TRUE(false) << "pthread id: " << std::this_thread::get_id() << "id: " << i << "unknown exception." << endl;
         }
     }
 }

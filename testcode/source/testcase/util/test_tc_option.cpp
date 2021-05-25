@@ -9,7 +9,7 @@
 #include "util/tc_common.h"
 #include <iterator>
 #include <iostream>
-#include <sys/time.h>
+// #include <sys/time.h>
 
 using namespace std;
 using namespace tars;

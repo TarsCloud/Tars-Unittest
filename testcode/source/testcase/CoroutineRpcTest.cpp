@@ -101,7 +101,7 @@ TEST_F(CoroutineRpcTest, should_response_rpc_when_client_Coroutine_call_server_b
 
     testCoro.getThreadControl().join();
 
-    sleep(1);
+    TC_Common::sleep(1);
 
     EXPECT_TRUE(isCallbackCalled);
 }

@@ -8,7 +8,7 @@
 #include "util/tc_file.h"
 #include <errno.h>
 #include <iterator>
-#include <sys/time.h>
+// #include <sys/time.h>
 
 using namespace std;
 using namespace tars;

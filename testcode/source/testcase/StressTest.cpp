@@ -49,11 +49,11 @@ void dohandle(AServantPrx pprx,int excut_num,int size)
         }
         catch(TC_Exception &e)
         {
-            cout << "pthread id: " << pthread_self() << "id: " << i << "exception: " << e.what() << endl;
+            cout << "pthread id: " << std::this_thread::get_id() << "id: " << i << "exception: " << e.what() << endl;
         }
         catch(...)
         {
-            cout << "pthread id: " << pthread_self() << "id: " << i << "unknown exception." << endl;
+            cout << "pthread id: " << std::this_thread::get_id()<< "id: " << i << "unknown exception." << endl;
         }
     }
 }

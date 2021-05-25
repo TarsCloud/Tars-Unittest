@@ -92,7 +92,7 @@ TEST_F(ProxyTest, should_response_when_asyn_call_proxy_call)
 		string sReq("tars go");
         ProxyTestCallbackPtr cbp= new ProxyTestCallback();
 		prx->async_testProxy(cbp,sReq);
-		sleep(1);
+		TC_Common::sleep(1);
     }
     catch(exception &ex)
     {

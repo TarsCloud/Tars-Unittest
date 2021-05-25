@@ -56,7 +56,7 @@ TEST_F(OneWayRpcTestS, oneway_should_response_rpc_when_client_async_call_server_
 
     prx -> async_test(NULL);
 
-    sleep(1);
+    TC_Common::sleep(1);
 
     EXPECT_TRUE(g_OneWayRpcTestSuccess);
 }

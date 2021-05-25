@@ -16,7 +16,7 @@
 
 #include <iostream>
 #include <cstdlib>
-#include <unistd.h>
+// #include <unistd.h>
 #include <vector>
 #include <map>
 #include "gtest/gtest.h"
@@ -110,8 +110,8 @@ TEST_F(TypeTest, test_type_when_client_sync_call_server_by_ip)
     res = prx->echoShort(stReq,stRsp);
     EXPECT_EQ(res, 0);
 
-    long lReq=1;
-    long lRsp;
+    int64_t lReq=1;
+    int64_t lRsp;
     res = prx->echoLong(lReq,lRsp);
     EXPECT_EQ(res, 0);
 

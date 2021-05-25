@@ -67,7 +67,7 @@ TEST_F(DyeingTestCase, should_response_when_call_nodykey_cmd)
     string strIn="abc";
 	string strOut;
 	int ret=dyeingPrx->testDyeing(strIn,strOut);
-	sleep(1);
+	TC_Common::sleep(1);
 	EXPECT_EQ(ret,0);
 
 	TLOGDEBUG("dyeing without key request time cost: "<< " | " << TC_TimeProvider::getInstance()->getNowMs() - tBegin << "(ms)" << endl);
@@ -85,15 +85,16 @@ TEST_F(DyeingTestCase, should_response_when_call_dyeing_cmd)
     string strIn="123456";
 	string strOut;
 	int ret=dyeingPrx->testDyeing(strIn,strOut);
-	sleep(1);
+	TC_Common::sleep(1);
 	EXPECT_EQ(ret,0);
 	string dyeFile=DYEFILEPATH;
 	dyeFile.append("dyeing");
 	dyeFile.append("_");
 	dyeFile.append(getTime());
 	dyeFile.append(".log");
-	int iRet=access(dyeFile.c_str(), F_OK);
-	EXPECT_EQ(iRet,0);
+	EXPECT_EQ(TC_File::isFileExist(dyeFile), true);
+	// int iRet=access(dyeFile.c_str(), F_OK);
+	// EXPECT_EQ(iRet,0);
 	
 	TLOGDEBUG("dyeing with key request time cost: "<< " | " << TC_TimeProvider::getInstance()->getNowMs() - tBegin << "(ms)" << endl);
 	

@@ -40,13 +40,13 @@ protected:
             TC_Common::gettimeofday(t1);
 
             _queue.push_back("abc");
-            usleep(1000);
+            TC_Common::msleep(1);
 
             timeval t2;
             TC_Common::gettimeofday(t2);
 
             _logger.debug() << "push_back:" << t2.tv_usec - t1.tv_usec << endl;
-				usleep(1000);
+			TC_Common::msleep(1);
 				cout << "write" << endl;
         }
     }
@@ -56,9 +56,6 @@ typedef TC_AutoPtr<WriteThread> WriteThreadPtr;
 
 class ReadThread : public TC_Thread, public TC_HandleBase
 {
-    /**
-     * ����
-     */
 protected:
     virtual void run() 
     {
@@ -74,7 +71,8 @@ protected:
                 TC_Common::gettimeofday(t2);
                 _logger.debug() << "pop_front:" << t2.tv_usec - t1.tv_usec << endl;
 //                cout << pthread_self() << ":" << t << endl;
-                usleep(20 * 1000);
+                TC_Common::msleep(20);
+                // usleep(20 * 1000);
             }
 
         }
@@ -102,7 +100,8 @@ TEST(TarsUtilTestcase, UT_TC_ThreadQueue)
     int done = true;
     while(true) {
         done = true;
-        usleep(1000*1000);
+        TC_Common::msleep(1000);
+        // usleep(1000*1000);
         for(size_t i = 0; i < 3;i++)
         {
             if(rts[i]->isAlive())    {

@@ -16,7 +16,7 @@
 
 #include <iostream>
 #include <cstdlib>
-#include <unistd.h>
+// #include <unistd.h>
 #include "gtest/gtest.h"
 #include "util/tc_common.h"
 #include "util/tc_clientsocket.h"
@@ -135,7 +135,7 @@ TEST_F(TupTest, test_tup_rpc_when_client_async_call_server_by_ip)
 	
 	TupTestCallbackPtr cbp=new TupTestCallback();
 	prx->rpc_call_async(iRequestId, "aAddb", sendBuff.c_str(), sendBuff.size(),cbp);
-    sleep(1);
+    TC_Common::sleep(1);
 }
 
 
