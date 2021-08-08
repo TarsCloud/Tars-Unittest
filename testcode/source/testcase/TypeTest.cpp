@@ -146,8 +146,9 @@ TEST_F(TypeTest, test_type_when_client_sync_call_server_by_ip)
 	mtReq.push_back(aReq);
 	mtReq.push_back(bbReq);
 	mReq[0]="tarstest";
-    res=prx->echoMultiType(mtReq,mtReq);
+    res=prx->echoMultiType(mtReq,mtRsp);
     EXPECT_EQ(res, 0);
+    EXPECT_EQ(mtReq.size(), mtRsp.size());
 
 	TLOGDEBUG("type test time cost: "<< " | " << TC_TimeProvider::getInstance()->getNowMs() - tBegin << "(ms)" << endl);
 }
