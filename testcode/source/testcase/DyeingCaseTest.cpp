@@ -79,7 +79,7 @@ TEST_F(DyeingTestCase, should_response_when_call_dyeing_cmd)
     int64_t tBegin = TC_TimeProvider::getInstance()->getNowMs();
   
 	AdminFPrx adminFPrx = _comm->stringToProxy<AdminFPrx>(UNIT_TEST_ADMIN_NAME_ENDPOINT);
-	string setdyeing = adminFPrx->notify("tars.setdyeing 123456 TarsTest.UnitTest.DyeingTestObj testDyeing");
+	string setdyeing = adminFPrx->notify("tars.setdyeing 123456 TarsTest.UnitTest.DyeingTestObj");
 	EXPECT_TRUE(setdyeing.find("DyeingKey=123456") != string::npos);
 	DyeingTestPrx dyeingPrx= _comm->stringToProxy<DyeingTestPrx>(DYEING_SERVANT_ENDPOINT);
     string strIn="123456";
